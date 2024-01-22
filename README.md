@@ -5,7 +5,7 @@ This is project created for personal health monitoring with the aim to monitor t
 
 
 
-Contributers:
+Collaborators:
 - Sandip Katel
 - Saphal Rimal
 - Sharad Pokharel
