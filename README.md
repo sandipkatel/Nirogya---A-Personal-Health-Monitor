@@ -5,8 +5,10 @@ This is project created for personal health monitoring with the aim to monitor t
 
 
 
-Contributers:
+<<<<<<< HEAD
+Collaborators:
 - [Sandip Katel](https://github.com/sandipkatel)
 - [Saphal Rimal](https://github.com/saphalr)
 - [Sharad Pokharel](https://github.com/sharadpokharel108)
 - [Sijan Joshi](https://github.com/YellowFlash27)
+>>>>>>> 141e11dbe6a27499771b909d3f7b84bad3c29e50
