@@ -6,7 +6,7 @@ This is project created for personal health monitoring with the aim to monitor t
 
 
 Contributers:
-- Sandip Katel
-- Saphal Rimal
-- Sharad Pokharel
-- Sijan Joshi
+- [Sandip Katel](https://github.com/sandipkatel)
+- [Saphal Rimal](https://github.com/saphalr)
+- [Sharad Pokharel](https://github.com/sharadpokharel108)
+- [Sijan Joshi](https://github.com/YellowFlash27)

@@ -1,2 +1,5 @@
 # Ignore the following folders
-**/AdditionalSet/
+# **/AdditionalSet/
+
+# Ignore testing stuff
+test?.py
