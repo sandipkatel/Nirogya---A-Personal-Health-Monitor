@@ -1,5 +1,4 @@
 import pandas as pd
 
-testing = pd.read_csv("dataset/Testing.csv")
-print(testing.head())
-print(list(testing.prognosis.head()))
+df = pd.read_csv("dataset/dis_sym_dataset_norm.csv", sep = ",", quotechar='"').values.tolist()
+print(list(df[i][0] for i in range(len(df))))
