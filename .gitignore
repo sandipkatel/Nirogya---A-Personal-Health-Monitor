@@ -3,3 +3,11 @@
 
 # Ignore testing stuff
 test?.py
+
+# Ignore tested output files
+output?.py
+
+# Ignore all other files in stuff folder
+stuff
+__pychache__/
+.idea/
