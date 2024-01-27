@@ -1,5 +1,7 @@
-# Ignore the following folders
-# **/AdditionalSet/
+# Ignore the following useful file
+QuickSort.py
+.gitignore
+**/AdditionalSet/
 
 # Ignore testing stuff
 test?.py
