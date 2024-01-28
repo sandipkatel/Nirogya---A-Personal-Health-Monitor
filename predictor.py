@@ -1,16 +1,64 @@
 # Privictionary dictionary
 import pandas as pd
 
-df1 = pd.read_csv("dataset/dis_sym_dataset_norm.csv")
-df1.set_index("label_dis", inplace = True)
-df1.index = df1.index.str.title()
+# Read the CSV file and perform necessary transformations
+df1 = pd.read_csv("dataset/AdditionalSet/testing.csv")
+
+# Capitalize the 'Disease' column based on your condition
+df1["Disease"] = df1["prognosis"].apply(lambda x: x.title() if x != x.upper() else x)
+
+# Drop unnecessary columns
+df1.drop(["prognosis"], axis=1, inplace=True)
+
+# Set 'Disease' as the new index
+df1.set_index("Disease", inplace=True)
+
+# Replace underscores with spaces in column names
+df1.columns = df1.columns.str.replace("_", " ")
+
+# Capitalize the column names
+df1.columns = df1.columns.str.title()
+
+# Sort the DataFrame by index and columns
+df1.sort_index(axis=0, inplace=True)
+df1.sort_index(axis=1, inplace=True)
+
+# Save the modified DataFrame to a new CSV file
 df1.to_csv("output0.csv")
 
-df2 = pd.read_csv("dataset/dis_sym_dataset_comb.csv")
-df2.set_index("label_dis", inplace = True)
+# Read the CSV file and perform necessary transformations
+df2 = pd.read_csv("dataset/AdditionalSet/training.csv")
+
+# Capitalize the 'Disease' column based on your condition
+df2["Disease"] = df2["prognosis"].apply(lambda x: x.title() if x != x.upper() else x)
+
+# Drop unnecessary columns
+df2.drop(["prognosis"], axis=1, inplace=True)
+
+# Set 'Disease' as the new index
+df2.set_index("Disease", inplace=True)
+
+# Replace underscores with spaces in column names
+df2.columns = df2.columns.str.replace("_", " ")
+
+# Capitalize the column names
+df2.columns = df2.columns.str.title()
+
+# Sort the DataFrame by index and columns
+df2.sort_index(axis=0, inplace=True)
+df2.sort_index(axis=1, inplace=True)
+
+# Save the modified DataFrame to a new CSV file
+df2.to_csv("output1.csv")
+
 
 def get_symptoms(disease):
-    return df1.columns[df1.loc[disease].astype(bool)].tolist()
+    try:
+        return df1.columns[df1.loc[disease.title()].astype(bool)].tolist()
+    except KeyError:
+        return df1.columns[df1.loc[disease.upper()].astype(bool)].tolist()
+    except KeyError:
+        raise KeyError("Could not find disease in data set")
 
 def pridict_dis():
     all_symptoms = {}
@@ -45,7 +93,7 @@ def pridict_dis():
 
 def dis_symptoms():
     disease = input("Enter the disease name: ")
-    for i, sym in enumerate(get_symptoms(disease.title())):
+    for i, sym in enumerate(get_symptoms(disease)):
         print(f"\t{i + 1}. {sym}")
 
 def main():
