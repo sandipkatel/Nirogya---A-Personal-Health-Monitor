@@ -13,9 +13,6 @@ class HomeWindow(Screen):
     pass
 
 class PredictorWindow(Screen):
-    symptomList = ObjectProperty(None)
-    disease = ObjectProperty(None)
-    
     def predict_dis(self,symptomList):
         disease = predict_dis(symptomList)
         if disease == None:
