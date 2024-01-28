@@ -1,0 +1,84 @@
+WindowManager:
+    HomeWindow:
+    PredictorWindow:
+
+<HomeWindow>:
+    name: "home"
+    GridLayout:
+        cols:1
+        Label:
+            text: "Health Monitor(working design)"
+            font_size: 30
+            halign:'right'
+            valign:'center'
+            size_hint: None, None
+            size: root.width,200
+            canvas.before:
+                Color:
+                    rgba: 0, 0, 0, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            
+        GridLayout:
+            cols:2
+            spacing:50
+            padding:50
+            Button:
+                text: "Predictor"
+                size_hint: None, None
+                size: 150,100
+                on_release:
+                    app.root.current = "predictor"
+            Button:
+                text: "some features"
+                size_hint: None, None
+                size: 150,100
+            Button:
+                text: "some features"
+                size_hint: None, None
+                size: 150,100
+            Button:
+                text: "some features"
+                size_hint: None, None
+                size: 150,100
+            Button:
+                text: "some featuresr"
+                size_hint: None, None
+                size: 150,100
+            Button:
+                text: "some features"
+                size_hint: None, None
+                size: 150,100
+
+<PredictorWindow>:
+    name: "predictor"
+    GridLayout:
+        cols:1
+        GridLayout:
+            padding: 50
+            spacing: 20
+            cols:2
+            Label:
+                text: "Enter Symptoms"
+                size_hint: None, None
+                size: 150,100
+            TextInput:
+                id: symptomList
+                size_hint: None, None
+                size: 150,100
+        RelativeLayout:
+            cols:1
+            Button:
+                text: "Predict"
+                on_press: root.predict_dis(symptomList.text)
+                size_hint: None, None
+                size: 150,100
+                pos: 150,200
+        GridLayout:
+            cols:2
+            Label:
+                text: "Possible Disease"
+            Label:
+                id: disease_label
+                text: "-"
