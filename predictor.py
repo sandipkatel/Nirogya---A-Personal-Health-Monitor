@@ -77,7 +77,7 @@ def main():
     print("What do you want?")
     choice = int(input("Enter 1 to find disease name or 2 to see symptoms: "))
     if choice == 1:
-        pridict_dis()
+        predict_dis()
     elif choice == 2:
         dis_symptoms()
     else:
