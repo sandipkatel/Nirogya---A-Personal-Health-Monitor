@@ -9,6 +9,7 @@ stuff/
 test*.*
 QuickSort.py
 Untitled.ipynb
+output?.csv
 
 # Ignore own itself
 # .gitignore
