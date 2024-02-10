@@ -31,7 +31,6 @@ class DataManager:
         self.df.sort_index(axis=1, inplace=True)
 
         # Save the modified DataFrame to a new CSV file
-        print(self.df.shape)
         self.df.to_csv(dest_filename)
         return self.df
 

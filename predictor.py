@@ -3,8 +3,8 @@
 from manager import DataManager 
 
 dm = DataManager()
-df1 = dm.load_and_process_data("Personal-Health-Monior/dataset/AdditionalSet/testing.csv", "output0.csv")
-df2 = dm.load_and_process_data("Personal-Health-Monior/dataset/AdditionalSet/training.csv", "output1.csv")
+df1 = dm.load_and_process_data("/dataset/AdditionalSet/testing.csv", "output0.csv")
+df2 = dm.load_and_process_data("/dataset/AdditionalSet/training.csv", "output1.csv")
 
 def get_disease_probablity(symptoms):
     total_sym = len(symptoms)
@@ -27,6 +27,8 @@ def get_disease_probablity(symptoms):
 
 def get_symptoms(disease):
     """return the symptom of given disease"""
+    # make only one index to avoid KeyError
+    df1.set_index(df1.index.get_level_values(1), inplace = True)
     try:
         return df1.columns[df1.loc[disease.title()].astype(bool)].tolist()
     except KeyError:
