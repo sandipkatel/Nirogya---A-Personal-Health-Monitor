@@ -1,0 +1,14 @@
+# Ignore all folder created by vs code
+__pycache__/
+.idea/
+.ipynb_checkpoints/
+.vs/
+stuff/
+
+# Ignore all stuff files
+test*.*
+QuickSort.py
+Untitled.ipynb
+
+# Ignore own itself
+# .gitignore

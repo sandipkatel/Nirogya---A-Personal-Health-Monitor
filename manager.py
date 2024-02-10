@@ -3,39 +3,39 @@
 import pandas as pd
 
 class DataManager:
-    df = None  # Shared class variable
+    def __init__(self):
+        self.df = None
 
-    def __init__(self, source_filename, dest_filename):
-        self.source_filename = source_filename
-        self.dest_filename = dest_filename
-
-    def load_and_process_data(self):
+    def load_and_process_data(self, source_filename, dest_filename):
         # Read the source file
-        df = pd.read_csv(self.source_filename)
+        self.df = pd.read_csv(source_filename)
+
+        # Drop duplicate data if any and reset index
+        self.df.drop_duplicates(inplace = True)
+        self.df.reset_index(drop=True, inplace=True)
 
         # Find the column containing the disease using the first object-type column
-        index_col = next(col for col, dtype in df.dtypes.items() if dtype == "object")
+        index_col_to_be = next(col for col, dtype in self.df.dtypes.items() if dtype == "object")
 
         # Set index and capitalize it
-        df[index_col.title()] = df.pop(index_col).apply(lambda x: x.title() if x != x.upper() else x)
-        df.set_index(index_col.title(), inplace=True)
+        self.df[index_col_to_be.title()] = self.df.pop(index_col_to_be).apply(lambda x: x.title() if x != x.upper() else x)
+        self.df.set_index([self.df.index, index_col_to_be.title()], inplace = True)
+        # self.df.set_index(index_col.title(), inplace=True)
+
 
         # Replace underscores with spaces in column names and capitalize them
-        df.columns = [col.replace("_", " ").title() for col in df.columns]
+        self.df.columns = [col.replace("_", " ").title() for col in self.df.columns]
 
         # Sort the DataFrame by index and columns
-        df.sort_index(axis=0, inplace=True)
-        df.sort_index(axis=1, inplace=True)
+        self.df.sort_index(axis=0, inplace=True)
+        self.df.sort_index(axis=1, inplace=True)
 
         # Save the modified DataFrame to a new CSV file
-        df.to_csv(self.dest_filename)
+        print(self.df.shape)
+        self.df.to_csv(dest_filename)
+        return self.df
 
-        # Save the processed DataFrame to the class variable for shared access
-        DataManager.df = df
-
-        return df
-
-    @staticmethod
+    """@staticmethod
     def get_all_headers():
         if DataManager.df is not None:
             return DataManager.df.columns.tolist()
@@ -54,4 +54,4 @@ class DataManager:
         if DataManager.df is not None:
             DataManager.df.to_csv(self.dest_filename)
         else:
-            raise ValueError("DataFrame not loaded or processed yet.")
+            raise ValueError("DataFrame not loaded or processed yet.")"""

@@ -1,58 +1,32 @@
 # Privictionary dictionary
-import pandas as pd
 
-# Read the CSV file and perform necessary transformations
-df1 = pd.read_csv("dataset/AdditionalSet/testing.csv")
+from manager import DataManager 
 
-# Capitalize the 'Disease' column based on your condition
-df1["Disease"] = df1["prognosis"].apply(lambda x: x.title() if x != x.upper() else x)
+dm = DataManager()
+df1 = dm.load_and_process_data("Personal-Health-Monior/dataset/AdditionalSet/testing.csv", "output0.csv")
+df2 = dm.load_and_process_data("Personal-Health-Monior/dataset/AdditionalSet/training.csv", "output1.csv")
 
-# Drop unnecessary columns
-df1.drop(["prognosis"], axis=1, inplace=True)
+def get_disease_probablity(symptoms):
+    total_sym = len(symptoms)
+    diseases = df2[df2[symptoms].isin([1]).all(axis=1)].index.tolist()
+    probabal_dis = {}
+    for dis_index, dis_value in diseases:
+        sum_sym = df2.iloc[dis_index].sum()
+        if dis_value not in probabal_dis:
+            # calculate probablity = (total no. of selected symtoms) / (tota no. of symptoms of that disease) 
+            probabal_dis[dis_value] = total_sym / sum_sym
+        else:
+            probabal_dis[dis_value] += total_sym / sum_sym
+    
+    total_probablity = sum(probabal_dis.values())
+    for dis, probablity in probabal_dis.items():
+        probabal_dis[dis] = probablity * 100/total_probablity
 
-# Set 'Disease' as the new index
-df1.set_index("Disease", inplace=True)
-
-# Replace underscores with spaces in column names
-df1.columns = df1.columns.str.replace("_", " ")
-
-# Capitalize the column names
-df1.columns = df1.columns.str.title()
-
-# Sort the DataFrame by index and columns
-df1.sort_index(axis=0, inplace=True)
-df1.sort_index(axis=1, inplace=True)
-
-# Save the modified DataFrame to a new CSV file
-df1.to_csv("output0.csv")
-
-# Read the CSV file and perform necessary transformations
-df2 = pd.read_csv("dataset/AdditionalSet/training.csv")
-
-# Capitalize the 'Disease' column based on your condition
-df2["Disease"] = df2["prognosis"].apply(lambda x: x.title() if x != x.upper() else x)
-
-# Drop unnecessary columns
-df2.drop(["prognosis"], axis=1, inplace=True)
-
-# Set 'Disease' as the new index
-df2.set_index("Disease", inplace=True)
-
-# Replace underscores with spaces in column names
-df2.columns = df2.columns.str.replace("_", " ")
-
-# Capitalize the column names
-df2.columns = df2.columns.str.title()
-
-# Sort the DataFrame by index and columns
-df2.sort_index(axis=0, inplace=True)
-df2.sort_index(axis=1, inplace=True)
-
-# Save the modified DataFrame to a new CSV file
-df2.to_csv("output1.csv")
-
+    sorted_probabal_dis = sorted(probabal_dis.items(), key=lambda x: x[1], reverse = True)
+    return sorted_probabal_dis
 
 def get_symptoms(disease):
+    """return the symptom of given disease"""
     try:
         return df1.columns[df1.loc[disease.title()].astype(bool)].tolist()
     except KeyError:
@@ -60,12 +34,13 @@ def get_symptoms(disease):
     except KeyError:
         raise KeyError("Could not find disease in data set")
 
+
 def pridict_dis():
+    """predict the disease accourding to selected symtoms"""
     all_symptoms = {}
     print("Among the following select the symptoms:")
     for i, sym in enumerate(df1.columns):
         all_symptoms[i] = sym
-
 
     print(all_symptoms.items(), end=", ")
     print()
@@ -74,24 +49,19 @@ def pridict_dis():
 
     for num in symptom_num:
         symptoms.append(all_symptoms[num])
-    dis1 = df1[df1[symptoms].isin([1]).all(axis=1)].index.tolist()
-    dis2 = df2[df2[symptoms].isin([1]).all(axis=1)].index.tolist()
-    disease = dis1 + dis2
-    count_dis = {}
-    for dis in disease:
-        if dis in count_dis:
-            count_dis[dis]  += 1/len(disease) * 100
-        else:
-            count_dis[dis] = 1/len(disease) * 100
-    count_dis = dict(sorted(count_dis.items(), key=lambda d: d[1], reverse=True))
-    if disease:
-        print("Probale disease:")
-        for dis_, per in count_dis.items():
-            print(f"\t{dis_}\t{per:.2f}")
-    else:
+    
+    probabal_diseases = get_disease_probablity(symptoms)
+    if len(probabal_diseases) >= 10:
+        print("Please provide sufficient data.")
+    elif len(probabal_diseases) == 0:
         print("Sorry, the symptoms are not compatible to any disease." )
+    else:
+        print("probabale disease:")
+        for dis, per in probabal_diseases:
+            print(f"\t{dis}\t{per:.2f}%")
 
 def dis_symptoms():
+    """display the symptoms of selected disease"""
     disease = input("Enter the disease name: ")
     for i, sym in enumerate(get_symptoms(disease)):
         print(f"\t{i + 1}. {sym}")
