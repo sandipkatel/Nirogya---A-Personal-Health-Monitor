@@ -1,76 +1,83 @@
 # Privictionary dictionary
+import pandas as pd
 
-from manager import DataManager 
+df1 = pd.read_csv("dataset/dis_sym_dataset_norm.csv")
+df1.set_index("label_dis", inplace = True)
+df1.index = df1.index.str.title()
+df1.to_csv("output0.csv")
 
-dm = DataManager()
-df1 = dm.load_and_process_data("Personal-Health-Monior/dataset/AdditionalSet/testing.csv", "output0.csv")
-df2 = dm.load_and_process_data("Personal-Health-Monior/dataset/AdditionalSet/training.csv", "output1.csv")
-
-def get_disease_probablity(symptoms):
-    total_sym = len(symptoms)
-    diseases = df2[df2[symptoms].isin([1]).all(axis=1)].index.tolist()
-    probabal_dis = {}
-    for dis_index, dis_value in diseases:
-        sum_sym = df2.iloc[dis_index].sum()
-        if dis_value not in probabal_dis:
-            # calculate probablity = (total no. of selected symtoms) / (tota no. of symptoms of that disease) 
-            probabal_dis[dis_value] = total_sym / sum_sym
-        else:
-            probabal_dis[dis_value] += total_sym / sum_sym
-    
-    total_probablity = sum(probabal_dis.values())
-    for dis, probablity in probabal_dis.items():
-        probabal_dis[dis] = probablity * 100/total_probablity
-
-    sorted_probabal_dis = sorted(probabal_dis.items(), key=lambda x: x[1], reverse = True)
-    return sorted_probabal_dis
+df2 = pd.read_csv("dataset/dis_sym_dataset_comb.csv")
+df2.set_index("label_dis", inplace = True)
 
 def get_symptoms(disease):
-    """return the symptom of given disease"""
-    try:
-        return df1.columns[df1.loc[disease.title()].astype(bool)].tolist()
-    except KeyError:
-        return df1.columns[df1.loc[disease.upper()].astype(bool)].tolist()
-    except KeyError:
-        raise KeyError("Could not find disease in data set")
+    return df1.columns[df1.loc[disease].astype(bool)].tolist()
 
-
-def pridict_dis():
-    """predict the disease accourding to selected symtoms"""
+def predict_dis(symptomString):
+    print("predict_dis called")
     all_symptoms = {}
     print("Among the following select the symptoms:")
     for i, sym in enumerate(df1.columns):
         all_symptoms[i] = sym
 
-    print(all_symptoms.items(), end=", ")
+
+   # print(all_symptoms.items(), end=", ")
     print()
-    symptom_num = list(int(s) for s in input("Select the symptoms:" ).split())
+    '''symptom_num = list(int(s) for s in input("Select the symptoms:" ).split()) '''
     symptoms = []
+    symptom_num = list(int(s) for s in symptomString.split())
 
     for num in symptom_num:
         symptoms.append(all_symptoms[num])
+    dis1 = df1[df1[symptoms].isin([1]).all(axis=1)].index.tolist()
+    dis2 = df2[df2[symptoms].isin([1]).all(axis=1)].index.tolist()
+    disease = dis1 + dis2
+    count_dis = {}
+    for dis in disease:
+        if dis in count_dis:
+            count_dis[dis]  += 1/len(disease) * 100
+        else:
+            count_dis[dis] = 1/len(disease) * 100
+    count_dis = dict(sorted(count_dis.items(), key=lambda d: d[1], reverse=True))
     
-    probabal_diseases = get_disease_probablity(symptoms)
-    if len(probabal_diseases) >= 10:
-        print("Please provide sufficient data.")
-    elif len(probabal_diseases) == 0:
-        print("Sorry, the symptoms are not compatible to any disease." )
+    if disease:
+        print("Probale disease:")
+        for dis_, per in count_dis.items():
+            print(f"\t{dis_}\t{per:.2f}")
+            return count_dis
     else:
-        print("probabale disease:")
-        for dis, per in probabal_diseases:
-            print(f"\t{dis}\t{per:.2f}%")
+        print("Sorry, the symptoms are not compatible to any disease." )
+        return None
+    
 
 def dis_symptoms():
-    """display the symptoms of selected disease"""
     disease = input("Enter the disease name: ")
-    for i, sym in enumerate(get_symptoms(disease)):
+    for i, sym in enumerate(get_symptoms(disease.title())):
         print(f"\t{i + 1}. {sym}")
+
+
+def predict_dis1(symptomString):
+    print(symptomString)
+    print("predict_dis called")
+    all_symptoms = {}
+    print("Among the following select the symptoms:")
+    for i, sym in enumerate(df1.columns):
+        all_symptoms[i] = sym
+
+
+   # print(all_symptoms.items(), end=", ")
+    print()
+    '''symptom_num = list(int(s) for s in input("Select the symptoms:" ).split()) '''
+    symptoms = []
+    symptom_num = list(symptomString.split(" "))
+    print(symptom_num)
+    '''for num in symptom_num:
+        symptoms.append(all_symptoms[num])'''
 
 def main():
     print("What do you want?")
     choice = int(input("Enter 1 to find disease name or 2 to see symptoms: "))
     if choice == 1:
-        pridict_dis()
+        predict_dis()
     elif choice == 2:
         dis_symptoms()
     else:
