@@ -10,6 +10,7 @@ test*.*
 QuickSort.py
 Untitled.ipynb
 main1.py
+style1.py
 *.csv
 
 # Ignore own itself
