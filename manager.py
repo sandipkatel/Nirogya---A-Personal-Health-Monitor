@@ -1,12 +1,13 @@
 # manager.py
-
+"""Manage the provided CSV file efficiently."""
 import pandas as pd
 
 class DataManager:
     def __init__(self):
         self.df = None
 
-    def load_and_process_data(self, source_filename, dest_filename):
+    def load_and_process_data(self, source_filename, dest_filename, set_index = False):
+        """load the data, set index, short data and return dataframe"""
         # Read the source file
         self.df = pd.read_csv(source_filename)
 
@@ -19,8 +20,10 @@ class DataManager:
 
         # Set index and capitalize it
         self.df[index_col_to_be.title()] = self.df.pop(index_col_to_be).apply(lambda x: x.title() if x != x.upper() else x)
-        self.df.set_index([self.df.index, index_col_to_be.title()], inplace = True)
-        # self.df.set_index(index_col.title(), inplace=True)
+        if set_index:
+            self.df.set_index([self.df.index, index_col_to_be.title()], inplace = True)
+        else:
+            self.df.set_index(index_col_to_be.title(), inplace=True)
 
 
         # Replace underscores with spaces in column names and capitalize them
@@ -31,7 +34,6 @@ class DataManager:
         self.df.sort_index(axis=1, inplace=True)
 
         # Save the modified DataFrame to a new CSV file
-        print(self.df.shape)
         self.df.to_csv(dest_filename)
         return self.df
 
