@@ -1,0 +1,29 @@
+<Content>:
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "200dp"
+    
+    MDTextField:
+        id: date_input
+        hint_text: "Date"
+        on_focus: app.show_date_picker()
+    MDTextField:
+        id: time_input
+        hint_text: "Time(HH:MM)"
+    MDTextField:
+        id: name_input
+        hint_text: "Name"
+
+MDFloatLayout:
+    BoxLayout:
+        orientation: 'vertical'
+        MDRaisedButton:
+            text: "Add Appointment"
+            size_hint_y: None
+            height: "48dp"
+            on_release: app.show_add_appointment_popup()
+        Label:
+            id: appointments_label
+            text: 'Appointments:'
+            color :0,0,1,1

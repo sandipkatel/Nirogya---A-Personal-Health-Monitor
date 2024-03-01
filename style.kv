@@ -1,98 +1,119 @@
-WindowManager:
-    HomeWindow:
-    PredictorWindow:
+<BackgroundLayout>:
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # Dark gray background
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Label:
+        id: background
+        size_hint: 10, 10
+        canvas.before:
+            Color:
+                rgba: 0.3, 0.3, 0.3, 1  # Light gray background
+            Rectangle:
+                pos: self.pos
+                size: self.size
 
 <HomeWindow>:
     name: "home"
-    FloatLayout:
-        canvas.before:
-            Color:
-                rgba: 0.1, 0.1, 0.1, 1  # Dark gray background
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-        Label:
-            id: background
-            size_hint: 10, 10
-            canvas.before:
-                Color:
-                    rgba: 0.3, 0.3, 0.3, 1  # Light gray background
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-
-        GridLayout:
-            cols: 1
-            size_hint: None, None
-            size_hint_min_y: root.height * 0.2
-            pos_hint: {"center_x": 0.5, "center_y": 0.7}
-            Label:
-                text: "Health Monitor (working design)"
-                font_size: root.height * 0.04
-                halign: 'right'
-                valign: 'center'
-
-        GridLayout:
-            cols: 2
-            spacing: root.width * 0.05
-            padding: root.width * 0.05
-            size_hint: None, None
-            size_hint_min_y: root.height * 0.5
-            pos_hint: {"center_x": 0.5, "center_y": 0.4}
-            Button:
-                text: "Predictor"
-                background_color: 1, 0, 0, 1  # Red button
+    Screen:
+        BackgroundLayout:
+            GridLayout:
+                cols: 1
                 size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
-                on_release:
-                    app.root.current = "predictor"
-            Button:
-                text: "Some features"
-                background_color: 0, 1, 0, 1  # Green button
+                size_hint_min_y: root.height * 0.2
+                pos_hint: {"center_x": 0.5, "center_y": 0.7}
+                Label:
+                    text: "Health Monitor (working design)"
+                    font_size: root.height * 0.04
+                    halign: 'right'
+                    valign: 'center'
+                    
+            GridLayout:
+                cols: 2
+                spacing: root.width * 0.05
+                padding: root.width * 0.05
                 size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
-            Button:
-                text: "Some features"
-                background_color: 0, 0, 1, 1  # Blue button
-                size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
-            Button:
-                text: "Some features"
-                background_color: 1, 1, 0, 1  # Yellow button
-                size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
-            Button:
-                text: "Some features"
-                background_color: 1, 0, 1, 1  # Magenta button
-                size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
-            Button:
-                text: "Some features"
-                background_color: 0, 1, 1, 1  # Cyan button
-                size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
+                size_hint_min_y: root.height * 0.5
+                pos_hint: {"center_x": 0.5, "center_y": 0.4}
+                Button:
+                    text: "Predictor"
+                    background_color: 1, 0, 0, 1  # Red button
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
+                    on_release:
+                        app.root.current = "predictor"
+                Button:
+                    text: "Scheduler"
+                    background_color: 0, 1, 0, 1  # Green button
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
+                    on_release:
+                        app.root.current = "scheduler"
+                Button:
+                    text: "Some features"
+                    background_color: 0, 0, 1, 1  # Blue button
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
+                Button:
+                    text: "Some features"
+                    background_color: 1, 1, 0, 1  # Yellow button
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
+                Button:
+                    text: "Some features"
+                    background_color: 1, 0, 1, 1  # Magenta button
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
+                Button:
+                    text: "Some features"
+                    background_color: 0, 1, 1, 1  # Cyan button
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
 
 <PredictorWindow>:
     name: "predictor"
-    FloatLayout:
-        canvas.before:
-            Color:
-                rgba: 0.1, 0.1, 0.1, 1  # Dark gray background
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    Screen:
+        BackgroundLayout:
+            Button:
+                text: "Back"
+                background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
+                size_hint: None, None
+                size: root.width * 0.1, root.height * 0.05
+                pos_hint: {"x": 0.05, "y": 0.9}
+                on_release: app.root.current = "home"
+            RelativeLayout:
+                cols: 1
+                BoxLayout:
+                    orientation: "vertical"
+                    ScrollView:
+                        id: symptom_scroll
+                        size_hint: (1, None)
+                        size: (root.width, root.height - 200)
+                        GridLayout:
+                            id: symptom_container
+                            cols: 1
+                            size_hint_y: None
+                            height: self.minimum_height
+                Button:
+                    text: "Predict"
+                    background_color: 1, 0, 0, 1  # Red button
+                    on_press: root.predict_disease()
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.1
+                    pos: root.width * 0.8, root.height * 0.4
+            Label:
+                id: disease_label
+                text: ""
+                size_hint_y: None
+                height: dp(40)
+                pos_hint: {"top": 0.9, "left": 0.1}
 
-        Label:
-            id: background
-            size_hint: 10, 10
-            canvas.before:
-                Color:
-                    rgba: 0.3, 0.3, 0.3, 1  # Light gray background
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-
+<SchedulerWindow>:
+    name: "scheduler"
+    BackgroundLayout:
         Button:
             text: "Back"
             background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
@@ -101,31 +122,44 @@ WindowManager:
             pos_hint: {"x": 0.05, "y": 0.9}
             on_release: app.root.current = "home"
 
-        RelativeLayout:
-            cols: 1
-            BoxLayout:
-                orientation: "vertical"
-                ScrollView:
-                    id: symptom_scroll
-                    size_hint: (1, None)
-                    size: (root.width, root.height - 200)
-                    GridLayout:
-                        id: symptom_container
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: "12dp"
+            size_hint_y: None
+            height: "200dp"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
-            Button:
-                text: "Predict"
-                background_color: 1, 0, 0, 1  # Red button
-                on_press: root.predict_disease()
+            TextInput:
+                id: date_input
+                hint_text: "Date"
+                # on_focus: root.show_date_picker(self, self.focus)
                 size_hint: None, None
-                size: root.width * 0.2, root.height * 0.1
-                pos: root.width * 0.8, root.height * 0.4
+                size: 150, 48  # Adjust the size as needed
+                pos_hint: {"center_x": 0.5}
+            TextInput:
+                id: time_input
+                hint_text: "Time(HH:MM)"
+                size_hint: None, None
+                size: 150, 48  # Adjust the size as needed
+                pos_hint: {"center_x": 0.5}
+            TextInput:
+                id: name_input
+                hint_text: "Name"
+                size_hint: None, None
+                size: 150, 48  # Adjust the size as needed
+                pos_hint: {"center_x": 0.5}
+
+        Button:
+            text: "Add Appointment"
+            size_hint: None, None
+            size: 200, 48
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            on_release: root.show_add_appointment_popup()
 
         Label:
-            id: disease_label
-            text: ""
-            size_hint_y: None
-            height: dp(40)
-            pos_hint: {"top": 0.9, "left": 0.1}
+            id: appointments_label
+            text: 'Appointments:'
+            color :0,0,1,1
+            size_hint: None, None
+            size: self.texture_size[0], self.texture_size[1]
+            pos_hint: {"center_x": 0.5, "center_y": 0.1}
