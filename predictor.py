@@ -3,11 +3,11 @@
 from manager import DataManager 
 
 dm = DataManager()
-df1 = dm.load_and_process_data("dataset/AdditionalSet/testing.csv", "output0.csv")
+df1 = dm.load_and_process_data("dataset/AdditionalSet/testing.csv", "output1.csv")
 
 def get_disease_probability(symptoms):
     """return diseases dictionary with their probability"""
-    df = dm.load_and_process_data("dataset/AdditionalSet/training.csv", "output1.csv", set_index= True)
+    df = dm.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv", set_index= True)
     total_sym = len(symptoms)
     diseases = df[df[symptoms].isin([1]).all(axis=1)].index.tolist()
     probabal_dis = {}
