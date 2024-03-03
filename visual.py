@@ -1,4 +1,5 @@
 from kivymd.app import MDApp
+from kivymd.uix.pickers import MDDatePicker
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -58,22 +59,25 @@ class PredictorWindow(Screen):
         else:
             print("Symptoms list is empty or None")
 
+class SymptomsWindow(Screen):
+    pass
+
+class Content(BoxLayout):
+    pass
 
 class SchedulerWindow(Screen):
     dialog = None
-    appointments_label = ObjectProperty(None)
-    date_input = ObjectProperty(None)
-    time_input = ObjectProperty(None)
-    name_input = ObjectProperty(None)
 
-    def __init__(self, **kwargs):
-        super(SchedulerWindow, self).__init__(**kwargs)
+    def build(self):
         self.scheduler = AppointmentScheduler()
+        self.theme_cls.theme_style = "Light"
+        self.theme_cls.primary_palette = "Blue"
+        return Builder.load_string(KV)
 
     def save_appointment(self):
-        date_str = self.date_input.text
-        time_str = self.time_input.text
-        name = self.name_input.text
+        date_str = self.dialog.content_cls.ids.date_input.text
+        time_str = self.dialog.content_cls.ids.time_input.text
+        name = self.dialog.content_cls.ids.name_input.text
         try:
             appointment_time = datetime.strptime(date_str + ' ' + time_str, '%Y-%m-%d %H:%M')
             self.scheduler.schedule_appointment(appointment_time, name)
@@ -83,26 +87,31 @@ class SchedulerWindow(Screen):
             self.show_error_popup('Invalid Date/Time Format')
 
     def update_appointments_label(self):
-        appointments = self.scheduler.appointments
-        appointment_texts = [f'{app[0]} - {app[1]}' for app in appointments]
+        appointments = self.scheduler.appointments.queue
+        appointment_texts = [f'{app[1][0]} - {app[1][1]}' for app in appointments]
         if appointment_texts:
             appointments_text = '\n'.join(appointment_texts)
         else:
             appointments_text = "No appointments scheduled."
-        self.appointments_label.text = f'Appointments:\n{appointments_text}'
+        self.root.ids.appointments_label.text = f'Appointments:\n{appointments_text}'
 
     def show_add_appointment_popup(self):
         if not self.dialog:
-            self.dialog = ContentDialog(
+            self.dialog = MDDialog(
                 title="Add Appointment:",
+                type="custom",
                 content_cls=Content(),
                 buttons=[
-                    Button(
+                    MDFlatButton(
                         text="CANCEL",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
                         on_release=self.on_cancel
                     ),
-                    Button(
+                    MDFlatButton(
                         text="OK",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
                         on_release=lambda *args: self.save_appointment()
                     ),
                 ],
@@ -115,21 +124,23 @@ class SchedulerWindow(Screen):
         error_popup.open()
 
     def on_cancel(self, *args):
+        self.date_picker_open = False
         self.dialog.dismiss()
 
-    def build(self):
-        layout = BoxLayout(orientation='vertical')
-        self.date_input = TextInput(hint_text="Date", on_focus=self.show_date_picker,
-                                    size_hint=(None, None), size=(150, 48), pos_hint={"center_x": 0.5})
-        layout.add_widget(self.date_input)
-        return layout
+    def on_save(self, instance, value, date_range):
+        try:
+            self.dialog.content_cls.ids.date_input.text = str(value)  
+        except ValueError:
+            self.show_error_popup('Invalid Date Format')
+        finally:
+            self.date_picker_open = False
 
-    def show_date_picker(self, instance, value):
-        date_picker_popup = DatePickerPopup(self.update_date_input)
-        date_picker_popup.open()
-
-    def update_date_input(self, date):
-        self.date_input.text = date.strftime("%Y-%m-%d")
+    def show_date_picker(self):
+        if not hasattr(self, 'date_picker_open') or not self.date_picker_open:
+            self.date_picker_open = True
+            date_dialog = MDDatePicker()
+            date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
+            date_dialog.open()
 
 
 class HospitalWindow(Screen):
