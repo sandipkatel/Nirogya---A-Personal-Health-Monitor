@@ -12,6 +12,7 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import ObjectProperty
 from kivy.metrics import dp
 from scheduler import AppointmentScheduler
+import predictor as pr
 
 Window.size = (360, 640)
 
