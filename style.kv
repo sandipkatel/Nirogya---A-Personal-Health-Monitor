@@ -47,6 +47,8 @@
                     background_color: 0, 0, 1, 1  # Blue button
                     size_hint: None, None
                     size: root.width * 0.4, root.height * 0.1
+                    on_release:
+                        app.root.current = "symptoms"
                     
                 MDRectangleFlatButton:
                     text: "Scheduler"
@@ -111,7 +113,7 @@
                 height: dp(40)
                 pos_hint: {"top": 0.9, "left": 0.1}
 
-<symptomsWindow>:
+<SymptomsWindow>:
     name: "symptoms"
     BackgroundLayout:
         MDRectangleFlatButton:
@@ -124,10 +126,24 @@
         MDTextField:
             id: disease
             hint_text: "Enter a Disease Name"
-            on_focus: root.show_date_picker(self, self.focus)
+            on_text_validate: root.find_symptoms(disease.text)
             size_hint: None, None
             size: 150, 48  # Adjust the size as needed
-            pos_hint: {"center_x": 0.5}
+            pos_hint: {"center_x": 0.5, "center_y": 0.8}
+
+        ScrollView:
+            size_hint: (None, None)
+            size: (root.width * 0.8, root.height * 0.5)
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            MDLabel:
+                id: symptoms
+                text: ""
+                size_hint_y: None
+                height: self.texture_size[1]
+        MDLabel:
+            pos_hint: {"top": 0.9, "left": 0.1}
+            size_hint_y: None
+            height: dp(40)
         
 <SchedulerWindow>:
     name: "scheduler"

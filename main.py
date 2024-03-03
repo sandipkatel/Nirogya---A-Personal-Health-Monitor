@@ -22,7 +22,7 @@ class MyMainApp(MDApp):
         wm.add_widget(self.predictor_window)
         wm.add_widget(self.scheduler_window)
         wm.add_widget(self.hospital_window)
-        wm.add_widget(self.symptoms_window)
+        wm.add_widget(self.symptoms_window) 
         return wm
 
     def on_start(self):

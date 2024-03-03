@@ -33,7 +33,7 @@ def get_symptoms(disease):
     except KeyError:
         return df1.columns[df1.loc[disease.upper()].astype(bool)].tolist()
     except KeyError:
-        raise KeyError("Could not find disease in data set")
+        return None
 
 def show_prevention_and_cure(disease):
     """return the prevention and cure of provided disease"""
@@ -60,18 +60,26 @@ def predict_dis(symptomList):
         return "Sorry, the symptoms are not compatible with any disease."
     else:
         result = "Probable disease:\n"
+        i = 0
         for dis, per in probabal_diseases:
-            result += f"\t{dis}\t{per:.2f}%\n"
+            i += 1
+            result += f"{i}. {dis}  {per:.2f}%\n"
         return result
 
 def dis_symptoms(disease):
     """return the symptoms of selected disease"""
-    symptoms = get_symptoms(disease)
-    return "\n".join([f"{i + 1}. {sym}" for i, sym in enumerate(symptoms)])
+    symptoms = get_symptoms(disease.capitalize())
+    if symptoms:
+        format_symptoms = "Symptoms:\n"
+        for i, dis in enumerate(symptoms):
+            format_symptoms += f"  {i + 1}.  {dis}\n"
+        return format_symptoms
+    else:
+        return None
 
 def get_prevention_and_cure(disease):
     """return the prevention and cure of provided disease"""
     preventions, cures = show_prevention_and_cure(disease)
-    prevention_text = "Prevention:\n" + "\n".join([f"\t{i + 1}. {prevention}" for i, prevention in enumerate(preventions)])
-    cure_text = "Cure/Treatment:\n" + "\n".join([f"\t{i + 1}. {cure}" for i, cure in enumerate(cures)])
+    prevention_text = "\n\nPrevention:\n" + "\n".join([f"  {i + 1}. {prevention}" for i, prevention in enumerate(preventions)])
+    cure_text = "\n\nCure/Treatment:\n" + "\n".join([f"  {i + 1}. {cure}" for i, cure in enumerate(cures)])
     return prevention_text, cure_text
