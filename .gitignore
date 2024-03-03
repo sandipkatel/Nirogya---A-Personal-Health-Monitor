@@ -13,5 +13,6 @@ main1.py
 style1.py
 *.csv
 tempCodeRunnerFile.py
+style*.*
 # Ignore ownself
 # .gitignore
