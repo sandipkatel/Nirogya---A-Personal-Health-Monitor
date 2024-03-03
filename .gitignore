@@ -12,6 +12,6 @@ Untitled.ipynb
 main1.py
 style1.py
 *.csv
-
-# Ignore own itself
+tempCodeRunnerFile.py
+# Ignore ownself
 # .gitignore
