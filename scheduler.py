@@ -16,6 +16,8 @@ class AppointmentScheduler:
             return self.appointments[0]
         else:
             return None
+        
+
 
 
 class PriorityQueue:

@@ -1,4 +1,4 @@
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -38,7 +38,7 @@ class PredictorWindow(Screen):
             self.ids.disease_label.text = "Please select at least one symptom."
 
     def on_enter(self):
-        symptoms_list = App.get_running_app().symptoms_list
+        symptoms_list = MDApp.get_running_app().symptoms_list
 
         if symptoms_list:
             self.ids.symptom_container.clear_widgets()
@@ -130,6 +130,11 @@ class SchedulerWindow(Screen):
 
     def update_date_input(self, date):
         self.date_input.text = date.strftime("%Y-%m-%d")
+
+
+class HospitalWindow(Screen):
+    def on_enter(self):
+        pass
 
 
 class ContentDialog(Popup):
