@@ -1,77 +1,85 @@
 <BackgroundLayout>:
-    canvas.before:
-        Color:
-            rgba: 0.1, 0.1, 0.1, 1  # Dark gray background
-        Rectangle:
-            pos: self.pos
-            size: self.size
-
     Label:
         id: background
         size_hint: 10, 10
         canvas.before:
             Color:
-                rgba: 0.3, 0.3, 0.3, 1  # Light gray background
+                rgba: 0.9, 1, 0.9, 1  # Light gray background
             Rectangle:
                 pos: self.pos
                 size: self.size
+<RoundedButton@Button>:
+    background_color: 0, 0, 1, 1  # Blue button
+    size_hint: None, None
+    size: root.width * 0.4, root.height * 0.1
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10,]
 
 <HomeWindow>:
     name: "home"
     Screen:
         BackgroundLayout:
-            GridLayout:
-                cols: 1
-                size_hint: None, None
-                size_hint_min_y: root.height * 0.2
-                pos_hint: {"center_x": 0.5, "center_y": 0.7}
-                Label:
-                    text: "Health Monitor (working design)"
-                    font_size: root.height * 0.04
-                    halign: 'right'
-                    valign: 'center'
+            orientation: "vertical"
+            AsyncImage:
+                source: './dependecies/Transparent_Logo.png'
+                size_hint: (None, None)
+                pos_hint: {"center_x": 0.1, "center_y": 0.9}
+                size: root.width * 0.2, root.height * 0.2
                     
             GridLayout:
-                cols: 2
-                spacing: root.width * 0.05
-                padding: root.width * 0.05
+                cols: 1
+                spacing: root.width * 0.01
+                padding: root.width * 0.01
                 size_hint: None, None
                 size_hint_min_y: root.height * 0.5
-                pos_hint: {"center_x": 0.5, "center_y": 0.4}
+                pos_hint: {"center_x": 0.5, "center_y": 0.7}
+                Button:
+                    text: "Daily Health Matrices"
+                    background_color: 0, 0, 1, 1  # Blue button
+                    size_hint: None, None
+                    size: root.width * 0.4, root.height * 0.1
+                    pos_hint: {"center_x": 0.5}
+
                 Button:
                     text: "Predictor"
-                    background_color: 1, 0, 0, 1  # Red button
+                    background_color: 0, 0, 1, 1  # Blue button
                     size_hint: None, None
-                    size: root.width * 0.2, root.height * 0.1
+                    size: root.width * 0.4, root.height * 0.1
                     on_release:
                         app.root.current = "predictor"
                 Button:
-                    text: "Scheduler"
-                    background_color: 0, 1, 0, 1  # Green button
+                    text: "Symptoms"
+                    background_color: 0, 0, 1, 1  # Blue button
                     size_hint: None, None
-                    size: root.width * 0.2, root.height * 0.1
+                    size: root.width * 0.4, root.height * 0.1
+                    
+                Button:
+                    text: "Scheduler"
+                    background_color: 0, 0, 1, 1  # Blue button
+                    size_hint: None, None
+                    size: root.width * 0.4, root.height * 0.1
                     on_release:
                         app.root.current = "scheduler"
                 Button:
-                    text: "Some features"
+                    text: "Remider"
                     background_color: 0, 0, 1, 1  # Blue button
                     size_hint: None, None
-                    size: root.width * 0.2, root.height * 0.1
+                    size: root.width * 0.4, root.height * 0.1
                 Button:
-                    text: "Some features"
-                    background_color: 1, 1, 0, 1  # Yellow button
+                    text: "Hospitals Nearby"
+                    background_color: 0, 0, 1, 1  # Blue button
                     size_hint: None, None
-                    size: root.width * 0.2, root.height * 0.1
+                    size: root.width * 0.4, root.height * 0.1
                 Button:
-                    text: "Some features"
-                    background_color: 1, 0, 1, 1  # Magenta button
+                    text: "SOS"
+                    background_color: 1, 0, 0, 1  # Cyan button
                     size_hint: None, None
-                    size: root.width * 0.2, root.height * 0.1
-                Button:
-                    text: "Some features"
-                    background_color: 0, 1, 1, 1  # Cyan button
-                    size_hint: None, None
-                    size: root.width * 0.2, root.height * 0.1
+                    size: root.width * 0.4, root.height * 0.1
 
 <PredictorWindow>:
     name: "predictor"
