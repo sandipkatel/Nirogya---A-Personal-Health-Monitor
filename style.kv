@@ -111,6 +111,24 @@
                 height: dp(40)
                 pos_hint: {"top": 0.9, "left": 0.1}
 
+<symptomsWindow>:
+    name: "symptoms"
+    BackgroundLayout:
+        MDRectangleFlatButton:
+            text: "Back"
+            background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
+            size_hint: None, None
+            size: root.width * 0.1, root.height * 0.05
+            pos_hint: {"x": 0.05, "y": 0.9}
+            on_release: app.root.current = "home"
+        MDTextField:
+            id: disease
+            hint_text: "Enter a Disease Name"
+            on_focus: root.show_date_picker(self, self.focus)
+            size_hint: None, None
+            size: 150, 48  # Adjust the size as needed
+            pos_hint: {"center_x": 0.5}
+        
 <SchedulerWindow>:
     name: "scheduler"
     BackgroundLayout:
@@ -132,7 +150,7 @@
             MDTextField:
                 id: date_input
                 hint_text: "Date"
-                on_focus: root.show_date_picker(self, self.focus)
+                on_focus: root.show_date_picker()
                 size_hint: None, None
                 size: 150, 48  # Adjust the size as needed
                 pos_hint: {"center_x": 0.5}
