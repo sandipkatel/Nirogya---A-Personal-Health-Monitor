@@ -4,6 +4,7 @@ __pycache__/
 .ipynb_checkpoints/
 .vs/
 stuff/
+cache/
 
 # Ignore all stuff files
 test*.*
