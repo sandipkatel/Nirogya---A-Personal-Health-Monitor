@@ -29,7 +29,7 @@ class RoundedButton(Button):
 
 class PredictorWindow(Screen):
     def predict_disease(self):
-        selected_symptoms = [self.ids[symptom + '_label'].text for symptom in App.get_running_app().symptoms_list if
+        selected_symptoms = [self.ids[symptom + '_label'].text for symptom in MDApp.get_running_app().symptoms_list if
                              self.ids[symptom + '_checkbox'].active]
         if selected_symptoms:
             result = pr.predict_dis(selected_symptoms)
