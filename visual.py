@@ -161,7 +161,7 @@ class SchedulerWindow(Screen):
         self.date_picker_open = False
 
     def on_save_date(self, instance, value, date_range):
-        self.ids.date_input.text = str
+        self.ids.date_input.text = value.strftime("%Y-%m-%d")
         self.date_picker_open = False
 
     def on_cancel_time(self, *args):
