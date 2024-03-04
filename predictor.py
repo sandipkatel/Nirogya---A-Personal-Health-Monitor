@@ -27,13 +27,14 @@ def get_disease_probability(symptoms):
     return sorted_probabal_dis
 
 def get_symptoms(disease):
-    """return the symptom of given disease"""
+    """Return the symptoms of the given disease."""
     try:
         return df1.columns[df1.loc[disease.title()].astype(bool)].tolist()
     except KeyError:
-        return df1.columns[df1.loc[disease.upper()].astype(bool)].tolist()
-    except KeyError:
-        return None
+        try:
+            return df1.columns[df1.loc[disease.upper()].astype(bool)].tolist()
+        except KeyError:
+            return None
 
 def show_prevention_and_cure(disease):
     """return the prevention and cure of provided disease"""
