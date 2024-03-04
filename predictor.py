@@ -59,11 +59,11 @@ def predict_dis(symptomList):
     elif len(probabal_diseases) == 0:
         return "Sorry, the symptoms are not compatible with any disease."
     else:
-        result = "Probable disease:\n"
+        result = "\nProbable disease:\n"
         i = 0
         for dis, per in probabal_diseases:
             i += 1
-            result += f"{i}. {dis}  {per:.2f}%\n"
+            result += f"{i}. {dis}      {per:.2f}%\n"
         return result
 
 def dis_symptoms(disease):
