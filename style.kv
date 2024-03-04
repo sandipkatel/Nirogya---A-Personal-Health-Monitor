@@ -166,37 +166,36 @@
             MDTextField:
                 id: date_input
                 hint_text: "Date"
-                on_focus: root.show_date_picker()
                 size_hint: None, None
-                size: 150, 48  # Adjust the size as needed
+                width: root.width*0.8
+                on_focus: root.show_date_picker()
                 pos_hint: {"center_x": 0.5}
             MDTextField:
                 id: time_input
-                hint_text: "Time(HH:MM)"
                 size_hint: None, None
-                size: 150, 48  # Adjust the size as needed
+                width: root.width*0.8
+                on_focus: root.show_time_picker()
+                hint_text: "Time(HH:MM)"
                 pos_hint: {"center_x": 0.5}
             MDTextField:
                 id: name_input
                 hint_text: "Name"
                 size_hint: None, None
-                size: 150, 48  # Adjust the size as needed
+                width: root.width*0.8
                 pos_hint: {"center_x": 0.5}
 
         MDRaisedButton:
             text: "Add Appointment"
             size_hint: None, None
             size: 200, 48
-            pos_hint: {"center_x": 0.5, "center_y": 0.2}
-            on_release: root.show_add_appointment_popup()
+            pos_hint: {"center_x": 0.5, "center_y": 0.3}
+            on_release: root.save_appointment()
 
         MDLabel:
             id: appointments_label
             text: 'Appointments:'
             color :0,0,1,1
-            size_hint: None, None
-            size: self.texture_size[0], self.texture_size[1]
-            pos_hint: {"center_x": 0.5, "center_y": 0.1}
+            pos_hint: {"center_x": 0.86, "center_y": 0.25}
 
 
 <HospitalWindow>:
