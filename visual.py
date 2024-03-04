@@ -62,6 +62,20 @@ class PredictorWindow(Screen):
 class SymptomsWindow(Screen):
     disease_label = None
     def find_symptoms(self, disease):
+        self.ids.symptoms.clear_widgets()
+        
+        self.disease_label = disease
+        result = pr.dis_symptoms(disease)
+        if result:
+            self.ids.symptoms.text = result
+            prevention, cure = pr.get_prevention_and_cure(self.disease_label)
+            self.ids.symptoms.text += prevention
+            self.ids.symptoms.text += cure
+        else:
+            self.ids.symptoms.text = "Sorry, unable to find any disease in dataset."
+    """def find_symptoms(self, disease):
+        self.ids.symptoms.clear_widgets()
+        
         self.disease_label = disease
         result = pr.dis_symptoms(disease)
         if result:
@@ -71,7 +85,7 @@ class SymptomsWindow(Screen):
             self.ids.symptoms.text = "Sorry, unable to find any disease in dataset."
 
     def add_info_button(self):
-        content = BoxLayout(orientation='vertical', pos_hint={"top": 0.5, "right": 0.1}, size_hint=(None, None))        
+        content = BoxLayout(orientation='vertical', pos_hint={"top": 1, "right": 0.1}, size_hint=(None, None))        
         content.add_widget(Label(text="Do you want to see prevention and cure?"))
         yes_button = Button(text='Yes')
         no_button = Button(text='No')
@@ -82,7 +96,7 @@ class SymptomsWindow(Screen):
         no_button.bind(on_release=lambda _: self.clear_instance(content))
         self.ids.symptoms.remove_widget(content)
         self.ids.symptoms.add_widget(content)
-
+        
     def display_additional_info(self, content):
         prevention, cure = pr.get_prevention_and_cure(self.disease_label)
         self.ids.symptoms.text += prevention
@@ -90,10 +104,7 @@ class SymptomsWindow(Screen):
         self.ids.symptoms.remove_widget(content)
 
     def clear_instance(self, content):
-        self.ids.symptoms.remove_widget(content)
-        content = BoxLayout(orientation='vertical')
-        content.add_widget(Label(text="Do you want to see prevention and cure?"))
-
+        self.ids.symptoms.remove_widget(content)"""
 
 class Content(BoxLayout):
     pass
