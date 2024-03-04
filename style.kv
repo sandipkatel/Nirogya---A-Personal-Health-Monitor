@@ -93,7 +93,6 @@
                     id: symptom_scroll
                     size_hint: (1, None)
                     size: (root.width * 0.5, root.height * 0.4)
-                    size_hint_max_x: 100
                     MDGridLayout:
                         id: symptom_container
                         cols: 1
@@ -108,11 +107,11 @@
                 pos_hint: {"x": 0.05, "y": 0.4}
             MDBoxLayout:
                 orientation: "vertical"
-                pos_hint: {"center_x": 0.5, "y": 0.05}
+                pos_hint: {"center_x": 0.65, "y": 0.05}
                 ScrollView:
                     id: disease_scroll
-                    size_hint: (None, None)
-                    size: (root.width * 0.5, root.height * 0.3)
+                    size_hint: (1, None)
+                    size: (root.width * 0.2, root.height * 0.3)
                     MDLabel:
                         id: disease_label
                         text: ""
@@ -174,36 +173,37 @@
             MDTextField:
                 id: date_input
                 hint_text: "Date"
-                size_hint: None, None
-                width: root.width*0.8
                 on_focus: root.show_date_picker()
+                size_hint: None, None
+                size: 150, 48  # Adjust the size as needed
                 pos_hint: {"center_x": 0.5}
             MDTextField:
                 id: time_input
-                size_hint: None, None
-                width: root.width*0.8
-                on_focus: root.show_time_picker()
                 hint_text: "Time(HH:MM)"
+                size_hint: None, None
+                size: 150, 48  # Adjust the size as needed
                 pos_hint: {"center_x": 0.5}
             MDTextField:
                 id: name_input
                 hint_text: "Name"
                 size_hint: None, None
-                width: root.width*0.8
+                size: 150, 48  # Adjust the size as needed
                 pos_hint: {"center_x": 0.5}
 
         MDRaisedButton:
             text: "Add Appointment"
             size_hint: None, None
             size: 200, 48
-            pos_hint: {"center_x": 0.5, "center_y": 0.3}
-            on_release: root.save_appointment()
+            pos_hint: {"center_x": 0.5, "center_y": 0.2}
+            on_release: root.show_add_appointment_popup()
 
         MDLabel:
             id: appointments_label
             text: 'Appointments:'
             color :0,0,1,1
-            pos_hint: {"center_x": 0.86, "center_y": 0.25}
+            size_hint: None, None
+            size: self.texture_size[0], self.texture_size[1]
+            pos_hint: {"center_x": 0.5, "center_y": 0.1}
 
 
 <HospitalWindow>:
