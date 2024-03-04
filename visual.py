@@ -27,10 +27,6 @@ class HomeWindow(Screen):
     pass
 
 
-class RoundedButton(Button):
-    pass
-
-
 class PredictorWindow(Screen):
     def predict_disease(self):
         selected_symptoms = [self.ids[symptom + '_label'].text for symptom in MDApp.get_running_app().symptoms_list if
@@ -78,40 +74,7 @@ class SymptomsWindow(Screen):
             self.ids.symptoms.text += prevention
             self.ids.symptoms.text += cure
         else:
-            self.ids.symptoms.text = "Sorry, unable to find any disease in dataset."
-    """def find_symptoms(self, disease):
-        self.ids.symptoms.clear_widgets()
-        
-        self.disease_label = disease
-        result = pr.dis_symptoms(disease)
-        if result:
-            self.ids.symptoms.text = result
-            self.add_info_button()
-        else:
-            self.ids.symptoms.text = "Sorry, unable to find any disease in dataset."
-
-    def add_info_button(self):
-        content = BoxLayout(orientation='vertical', pos_hint={"top": 1, "right": 0.1}, size_hint=(None, None))        
-        content.add_widget(Label(text="Do you want to see prevention and cure?"))
-        yes_button = Button(text='Yes')
-        no_button = Button(text='No')
-        content.add_widget(yes_button)
-        content.add_widget(no_button)
-
-        yes_button.bind(
-            on_release=lambda _: self.display_additional_info(content))
-        no_button.bind(on_release=lambda _: self.clear_instance(content))
-        self.ids.symptoms.remove_widget(content)
-        self.ids.symptoms.add_widget(content)
-        
-    def display_additional_info(self, content):
-        prevention, cure = pr.get_prevention_and_cure(self.disease_label)
-        self.ids.symptoms.text += prevention
-        self.ids.symptoms.text += cure
-        self.ids.symptoms.remove_widget(content)
-
-    def clear_instance(self, content):
-        self.ids.symptoms.remove_widget(content)"""
+            self.ids.symptoms.text = f"Sorry, unable to find any disease named {disease} in dataset."
 
 class Content(BoxLayout):
     pass
