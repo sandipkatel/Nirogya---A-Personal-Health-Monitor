@@ -1,62 +1,85 @@
-# schedular.py
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
+from kivymd.uix.label import MDLabel
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from datetime import datetime
-from kivy.lang import Builder
 from kivymd.uix.dialog import MDDialog
-from kivymd.app import MDApp
-from kivymd.uix.pickers import MDDatePicker
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDRaisedButton
+from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.boxlayout import MDBoxLayout
 
-KV = '''
-<Content>
-    orientation: "vertical"
-    spacing: "12dp"
-    size_hint_y: None
-    height: "200dp"
-    
-    MDTextField:
-        id: date_input
-        hint_text: "Date"
-        on_focus: app.show_date_picker()
-    MDTextField:
-        id: time_input
-        hint_text: "Time(HH:MM)"
-    MDTextField:
-        id: name_input
-        hint_text: "Name"
+# KV = '''
+# <Content>
+#     orientation: "vertical"
+#     spacing: "12dp"
+#     size_hint_y: None
+#     height: "200dp"
 
-MDFloatLayout:
-    BoxLayout:
-        orientation: 'vertical'
-        MDRaisedButton:
-            text: "Add Appointment"
-            size_hint_y: None
-            height: "48dp"
-            on_release: app.show_add_appointment_popup()
-        Label:
-            id: appointments_label
-            text: 'Appointments:'
-            color :0,0,1,1
-'''
+#     MDTextField:
+#         id: date_input
+#         hint_text: "Date"
+#         on_focus: app.show_date_picker()
+
+#     MDTextField:
+#         id: time_input
+#         hint_text: "Time(HH:MM)"
+
+#     MDTextField:
+#         id: name_input
+#         hint_text: "Name"
+
+# MDFloatLayout:
+#     BoxLayout:
+#         orientation: 'vertical'
+#         MDRaisedButton:
+#             text: "Add Appointment"
+#             size_hint_y: None
+#             height: "48dp"
+#             on_release: app.save_appointment()
+#         Label:
+#             id: appointments_label
+#             text: 'Appointments:'
+#             color :0,0,1,1
+# '''
 
 class Content(BoxLayout):
-    pass
+    def clear_fields(self):
+        self.ids.date_input.text = ''
+        self.ids.time_input.text = ''
+        self.ids.name_input.text = ''
 
-class SchedulerApp(MDApp):
-    dialog = None
-    
-    def build(self):
-        self.scheduler = AppointmentScheduler()
-        self.theme_cls.theme_style = "Light"
-        self.theme_cls.primary_palette = "Blue"
-        return Builder.load_string(KV)
+class SchedulerScreen(Screen):
+    def __init__(self, **kwargs):
+        super(SchedulerScreen, self).__init__(**kwargs)
+        layout = MDBoxLayout(orientation='vertical')
+        self.date_input = MDTextField(hint_text="Date")
+        self.date_input.bind(on_focus=self.show_date_picker)
+        time_input = MDTextField(hint_text="Time(HH:MM)")
+        name_input = MDTextField(hint_text="Name")
+        add_button = MDRaisedButton(text="Add Appointment", on_release=self.save_appointment)
+        appointments_label = MDLabel(text='Appointments:', halign='center')
 
-    def save_appointment(self):
+        layout.add_widget(self.date_input)
+        layout.add_widget(time_input)
+        layout.add_widget(name_input)
+        layout.add_widget(add_button)
+        layout.add_widget(appointments_label)
+
+        self.add_widget(layout)
+
+    def show_date_picker(self, instance, value):
+        if value:
+            date_dialog = MDDatePicker(callback=self.set_date)
+            date_dialog.open()
+
+    def set_date(self, instance, value, date_range):
+        date_input = self.ids.date_input
+        date_input.text = value.strftime('%Y-%m-%d')
+
+    def save_appointment(self, instance):
         date_str = self.dialog.content_cls.ids.date_input.text
         time_str = self.dialog.content_cls.ids.time_input.text
         name = self.dialog.content_cls.ids.name_input.text
@@ -68,74 +91,29 @@ class SchedulerApp(MDApp):
         except ValueError:
             self.show_error_popup('Invalid Date/Time Format')
 
-    def update_appointments_label(self):
-        appointments = self.scheduler.appointments.queue
-        appointment_texts = [f'{app[1][0]} - {app[1][1]}' for app in appointments]
-        if appointment_texts:
-            appointments_text = '\n'.join(appointment_texts)
-        else:
-            appointments_text = "No appointments scheduled."
-        self.root.ids.appointments_label.text = f'Appointments:\n{appointments_text}'
-
-    def show_add_appointment_popup(self):
-        if not self.dialog:
-            self.dialog = MDDialog(
-                title="Add Appointment:",
-                type="custom",
-                content_cls=Content(),
-                buttons=[
-                    MDFlatButton(
-                        text="CANCEL",
-                        theme_text_color="Custom",
-                        text_color=self.theme_cls.primary_color,
-                        on_release=self.on_cancel
-                    ),
-                    MDFlatButton(
-                        text="OK",
-                        theme_text_color="Custom",
-                        text_color=self.theme_cls.primary_color,
-                        on_release=lambda *args: self.save_appointment()
-                    ),
-                ],
-            )
-        self.dialog.open()
-
     def show_error_popup(self, message):
-        content = Label(text=message)
-        error_popup = Popup(title='Error', content=content, size_hint=(None, None), size=(300, 200))
-        error_popup.open()
+        error_dialog = MDDialog(title='Error', text=message, size_hint=(0.5, 0.5))
+        error_dialog.open()
 
-    def on_cancel(self, *args):
-        self.date_picker_open = False
-        self.dialog.dismiss()
 
-    def on_save(self, instance, value, date_range):
-        try:
-            self.dialog.content_cls.ids.date_input.text = str(value)  
-        except ValueError:
-            self.show_error_popup('Invalid Date Format')
-        finally:
-            self.date_picker_open = False
+class MainScreen(Screen):
+    def __init__(self, **kwargs):
+        super(MainScreen, self).__init__(**kwargs)
+        layout = MDBoxLayout(orientation='vertical')
+        switch_screen_button = MDRaisedButton(text="Go to Scheduler Screen", on_release=self.switch_screen)
+        layout.add_widget(switch_screen_button)
+        self.add_widget(layout)
 
-    def show_date_picker(self):
-        if not hasattr(self, 'date_picker_open') or not self.date_picker_open:
-            self.date_picker_open = True
-            date_dialog = MDDatePicker()
-            date_dialog.bind(on_save=self.on_save, on_cancel=self.on_cancel)
-            date_dialog.open()
+    def switch_screen(self, instance):
+        self.manager.current = 'scheduler'
 
-class AppointmentScheduler:
-    def __init__(self):
-        self.appointments = PriorityQueue()
 
-    def schedule_appointment(self, appointment_time, patient_name):
-        self.appointments.push((appointment_time, patient_name), appointment_time)
-
-    def cancel_appointment(self, appointment_time, patient_name):
-        self.appointments.remove((appointment_time, patient_name))
-
-    def next_appointment(self):
-        return self.appointments.peek()
+class SchedulerApp(MDApp):
+    def build(self):
+        sm = ScreenManager()
+        sm.add_widget(MainScreen(name='main'))
+        sm.add_widget(SchedulerScreen(name='scheduler'))
+        return sm
 
 class PriorityQueue:
     def __init__(self):
@@ -159,6 +137,19 @@ class PriorityQueue:
 
     def remove(self, item):
         self.queue = [(priority, value) for priority, value in self.queue if value != item]
+
+class AppointmentScheduler:
+    def __init__(self):
+        self.appointments = PriorityQueue()
+
+    def schedule_appointment(self, appointment_time, patient_name):
+        self.appointments.push((appointment_time, patient_name), appointment_time)
+
+    def cancel_appointment(self, appointment_time, patient_name):
+        self.appointments.remove((appointment_time, patient_name))
+
+    def next_appointment(self):
+        return self.appointments.peek()
 
 if __name__ == '__main__':
     SchedulerApp().run()

@@ -1,6 +1,9 @@
 from kivymd.app import MDApp
 import visual as vs
 import predictor as pr
+from kivy.core.window import Window
+
+Window.size = (360, 640)
 
 
 class MyMainApp(MDApp):
@@ -22,15 +25,17 @@ class MyMainApp(MDApp):
         wm.add_widget(self.predictor_window)
         wm.add_widget(self.scheduler_window)
         wm.add_widget(self.hospital_window)
-        wm.add_widget(self.symptoms_window) 
+        wm.add_widget(self.symptoms_window)
         return wm
 
     def on_start(self):
         self.symptoms_list = list(pr.df1.columns)
         if self.predictor_window:
             self.predictor_window.on_enter()
+            pass
         if self.scheduler_window:
             self.scheduler_window.on_enter()
+            pass
         if self.hospital_window:
             self.hospital_window.on_enter()
         if self.symptoms_window:
