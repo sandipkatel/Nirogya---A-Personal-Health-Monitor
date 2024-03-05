@@ -180,6 +180,7 @@
             MDTextField:
                 id: time_input
                 hint_text: "Time(HH:MM)"
+                on_focus: root.show_time_picker()
                 size_hint: None, None
                 size: 150, 48  # Adjust the size as needed
                 pos_hint: {"center_x": 0.5}
