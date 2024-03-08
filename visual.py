@@ -6,6 +6,8 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.checkbox import CheckBox
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.label import MDLabel
+from kivy.properties import BooleanProperty, StringProperty
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivymd.uix.button import MDFlatButton, MDRaisedButton
@@ -33,26 +35,11 @@ class BackgroundLayout(FloatLayout):
 class HomeWindow(Screen):
     pass
 
-            
-class SymptomCheckbox(MDCheckbox):
-    def __init__(self, symptom, **kwargs):
-        super(SymptomCheckbox, self).__init__(**kwargs)
-        self.symptom = symptom
-        self.size_hint_x = None
-        self.width = dp(30)
-        self.on_release = self.toggle_checkbox_color
-
-    def toggle_checkbox_color(self):
-        if self.active:
-            self.color = (0, 0, 1, 1)  # Change color to red when checked
-        else:
-            self.color = (0, 0, 0, 1)
 
 class PredictorWindow(Screen):
     def predict_disease(self):
         pr = Prediction()
-        selected_symptoms = [self.ids[symptom + '_label'].text for symptom in MDApp.get_running_app().symptoms_list if
-                             self.ids[symptom + '_checkbox'].active]
+        selected_symptoms = [field.symptom for field in self.ids.symptom_container.children if field.selected]
         if selected_symptoms:
             result = pr.predict_dis(selected_symptoms)
             self.ids.disease_label.text = result
@@ -66,14 +53,34 @@ class PredictorWindow(Screen):
             self.ids.symptom_container.clear_widgets()
 
             for symptom in symptoms_list:
-                symptom_checkbox = SymptomCheckbox(symptom)
-                symptom_label = MDLabel(text=symptom)
+                symptom_field = SymptomOptionField(symptom)
+                self.ids.symptom_container.add_widget(symptom_field)
 
-                layout = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40))
-                layout.add_widget(symptom_checkbox)
-                layout.add_widget(symptom_label)
+class SymptomOptionField(ButtonBehavior, BoxLayout):
+    selected = BooleanProperty(False)
+    symptom = StringProperty("")
 
-                self.ids.symptom_container.add_widget(layout)
+    def __init__(self, symptom, **kwargs):
+        super(SymptomOptionField, self).__init__(**kwargs)
+        self.symptom = symptom
+        self.orientation = 'horizontal'
+        self.size_hint_y = None
+        self.height = dp(50)
+        self.label = MDLabel(text=symptom, size_hint_x=None, width=dp(150))
+        self.add_widget(self.label)
+        self.toggle_selection_color()
+
+    def toggle_selection_color(self):
+        if self.selected:
+            self.label.color = (0, 0, 0, 1)  # Change text color when selected
+            self.background_color = (0.3, 0.3, 0.3, 1)  # Change background color when selected
+        else:
+            self.label.color = (1, 1, 1, 1)  # Restore text color when deselected
+            self.background_color = (1, 1, 1, 1)  # Restore background color when deselected
+
+    def on_release(self):
+        self.selected = not self.selected
+        self.toggle_selection_color()
 
 
 class SymptomsWindow(Screen):
