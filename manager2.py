@@ -19,6 +19,9 @@ class DataManager:
             # Read data rows
             for row in csv_reader:
                 row[0] = row[0].title() if row[0] != row[0].upper() else row[0]
+                for i, _data in enumerate(row):
+                    if _data.islower():
+                        row[i] = _data.capitalize()
                 self.data.insert(row)
 
         if dest_filename:

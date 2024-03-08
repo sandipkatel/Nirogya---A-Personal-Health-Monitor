@@ -1,7 +1,7 @@
 from kivymd.app import MDApp
 import visual as vs
 # import predictor as pr
-from predictor1 import Prediction
+from predictor import Prediction
 from kivy.core.window import Window
 
 Window.size = (360, 640)
