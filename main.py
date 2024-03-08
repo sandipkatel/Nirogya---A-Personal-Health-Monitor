@@ -1,6 +1,7 @@
 from kivymd.app import MDApp
 import visual as vs
-import predictor as pr
+# import predictor as pr
+from predictor1 import Prediction
 from kivy.core.window import Window
 
 Window.size = (360, 640)
@@ -8,6 +9,7 @@ Window.size = (360, 640)
 
 class MyMainApp(MDApp):
     symptoms_list = []
+    pr = Prediction()
     predictor_window = None
     scheduler_window = None
     hospital_window = None
@@ -29,7 +31,7 @@ class MyMainApp(MDApp):
         return wm
 
     def on_start(self):
-        self.symptoms_list = list(pr.df1.columns)
+        self.symptoms_list = list(self.pr.get_columns())
         if self.predictor_window:
             self.predictor_window.on_enter()
             pass

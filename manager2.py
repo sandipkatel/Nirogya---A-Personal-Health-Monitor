@@ -1,82 +1,84 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
-class LinkedList:
-    def __init__(self):
-        self.head = None
-
-    def add(self, data):
-        new_node = Node(data)
-        if not self.head:
-            self.head = new_node
-        else:
-            current = self.head
-            while current.next:
-                current = current.next
-            current.next = new_node
+# manager2.py
+from AVLTree import AVLTree
 
 class DataManager:
     def __init__(self):
-        self.data = LinkedList()
+        self.data = AVLTree()
+        self.columns = []
+    def clear_data(self):
+        self.data = AVLTree()
         self.columns = []
 
-    def load_and_process_data(self, source_filename, dest_filename, set_index=False):
+    def load_and_process_data(self, source_filename, dest_filename):
+        self.clear_data()
         with open(source_filename, 'r') as file:
             # Read header to extract column names
             header = file.readline().strip().split(',')
             self.columns = header
-
             # Skip header and read data
             for line in file:
                 row = line.strip().split(',')
-                self.data.add(row)
+                row[0] = row[0].title() if row[0] != row[0].upper() else row[0]
+                self.data.insert(row)
 
-        # Now you can perform various operations on self.data
-        # For example, you can implement functions to remove duplicates, sort, search, etc.
 
         # Save the modified data to a new CSV file
         with open(dest_filename, 'w') as file:
             # Write header
             file.write(','.join(self.columns) + '\n')
-
-            current = self.data.head
-            while current:
-                file.write(','.join(current.data) + '\n')
-                current = current.next
+            for data_row in self.data.get_data():
+                converted_data = [str(item) if not isinstance(item, str) else item for item in data_row]
+                file.write(','.join(converted_data) + '\n')
 
         # Simulating DataFrame behavior by providing similar interface
         class DataFrameLike:
             def __init__(self, data_manager):
                 self.data_manager = data_manager
 
-            def __getitem__(self, key):
-                # Implement column access
-                if isinstance(key, str):
-                    if key in self.data_manager.columns:
-                        index = self.data_manager.columns.index(key)
-                        result = []
-                        current = self.data_manager.data.head
-                        while current:
-                            result.append(current.data[index])
-                            current = current.next
-                        return result
-                    else:
-                        raise KeyError(f"Column '{key}' not found.")
+            def columns(self):
+                # Return column names
+                return self.data_manager.columns[1:]
+                    
+            def find_diseases(self, symptoms):
+                # Find diseases where all specified symptoms are present
+                result = []
+                dataset = self.data_manager.data.get_data()
+                for data in dataset:
+                    has_symptoms = True
+                    for symptom in symptoms:
+                        symptom_index = self.data_manager.columns.index(symptom)
+                        if data[symptom_index] != '1':
+                            has_symptoms = False
+                            break
+                    if has_symptoms:
+                        sum = 0
+                        new_data = data[1:]
+                        for value in new_data:
+                            sum += int(value)
+                        result.append((data[0], sum))
+                return result
+
+            def find_symptoms(self, disease):
+                data = self.data_manager.data.search_data(disease)
+                if data:
+                    symptoms = []
+                    for i, value in enumerate(data):
+                        if value == "1":
+                            symptoms.append(self.data_manager.columns[i])
+                    return symptoms
                 else:
-                    raise TypeError("Only column name access is supported.")
+                    return None
 
-            def to_csv(self, filename):
-                # Save DataFrame as CSV
-                with open(filename, 'w') as file:
-                    # Write header
-                    file.write(','.join(self.data_manager.columns) + '\n')
-
-                    current = self.data_manager.data.head
-                    while current:
-                        file.write(','.join(current.data) + '\n')
-                        current = current.next
+            def find_internal_data(self, disease):
+                data = self.data_manager.data.search_data(disease)
+                if data:
+                    data_values = []
+                    for value in data[1:]:
+                        if value:
+                            data_values.append(value)
+                    return data_values
+                else:
+                    return None
 
             def __repr__(self):
                 # Implement representation
@@ -85,11 +87,32 @@ class DataManager:
         return DataFrameLike(self)
 
 
-
 def main():
     data_manager = DataManager()
-    df = data_manager.load_and_process_data("dataset/AdditionalSet/testing.csv", "output0.csv")
-    df.to_csv('new_output.csv')
+    df = data_manager.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv")
+    symptoms = ["Continuous Sneezing"]
 
+    diseases = df.find_diseases(symptoms)
+    print("Diseases:", diseases)
+    total_sym = len(symptoms)
+    probabal_dis = {}
+    for dis_label, sum_sym in diseases:
+        if dis_label not in probabal_dis:
+            probabal_dis[dis_label] = (total_sym / sum_sym)**2
+        else:
+            probabal_dis[dis_label] += (total_sym / sum_sym)**2
+    
+    total_probablity = sum(probabal_dis.values())
+    for dis, probablity in probabal_dis.items():
+        probabal_dis[dis] = probablity * 100/total_probablity
 
-main()
+    sorted_probabal_dis = sorted(probabal_dis.items(), key=lambda x: x[1], reverse = True)
+    print(sorted_probabal_dis)
+
+    
+    df1 = data_manager.load_and_process_data("dataset/Additionalset/testing.csv", "output7.csv")
+    syms = df1.find_internal_data("AIDS")
+    print(syms)
+
+if __name__ == "__main__":
+    main()

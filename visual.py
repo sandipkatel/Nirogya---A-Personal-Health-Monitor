@@ -15,8 +15,9 @@ from kivy.uix.textinput import TextInput
 # from kivy.properties import ObjectProperty
 from kivy.metrics import dp
 from scheduler import AppointmentScheduler
-import predictor as pr
+# import predictor as pr
 from datetime import datetime, date
+from predictor1 import Prediction, Detail
 
 
 class BackgroundLayout(FloatLayout):
@@ -29,6 +30,7 @@ class HomeWindow(Screen):
 
 class PredictorWindow(Screen):
     def predict_disease(self):
+        pr = Prediction()
         selected_symptoms = [self.ids[symptom + '_label'].text for symptom in MDApp.get_running_app().symptoms_list if
                              self.ids[symptom + '_checkbox'].active]
         if selected_symptoms:
@@ -63,16 +65,18 @@ class PredictorWindow(Screen):
 class SymptomsWindow(Screen):
     disease_label = None
 
-    def find_symptoms(self, disease):
-        self.ids.symptoms.clear_widgets()
+    def find_info(self, disease):
+        dtl = Detail()
+        self.ids.all_info.clear_widgets()
         
-        self.disease_label = disease
-        result = pr.dis_symptoms(disease)
+        disease_label = disease
+        result = dtl.dis_description(disease)
         if result:
-            self.ids.symptoms.text = result
-            prevention, cure = pr.get_prevention_and_cure(self.disease_label)
-            self.ids.symptoms.text += prevention
-            self.ids.symptoms.text += cure
+            self.ids.all_info.text = result
+            symptoms, prevention, cure = dtl.dis_detaile()
+            self.ids.all_info.text += symptoms
+            self.ids.all_info.text += prevention
+            self.ids.all_info.text += cure
         else:
             self.ids.symptoms.text = f"Sorry, unable to find any disease named {disease} in dataset."
 

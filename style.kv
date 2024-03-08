@@ -134,7 +134,7 @@
             hint_text: "Enter a Disease"
             icon_right: "magnify"
             icon_right_color: app.theme_cls.primary_color
-            on_text_validate: root.find_symptoms(disease.text)
+            on_text_validate: root.find_info(disease.text)
             size_hint: None, None
             size: 200, 48 
             pos_hint: {"center_x": 0.5, "center_y": 0.8}
@@ -147,7 +147,7 @@
                 size_hint: (None, None)
                 size: (root.width * 0.5, root.height * 0.5)
                 MDLabel:
-                    id: symptoms
+                    id: all_info
                     text: ""
                     size_hint_y: None
                     height: self.texture_size[1]
