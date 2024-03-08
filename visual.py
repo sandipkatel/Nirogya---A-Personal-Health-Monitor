@@ -6,16 +6,22 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
-from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDFlatButton, MDRaisedButton
 from kivymd.uix.dialog import MDDialog
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
 from kivy.metrics import dp
+from kivymd.uix.list import TwoLineListItem
+from kivymd.uix.menu import MDDropdownMenu
 from scheduler import AppointmentScheduler
 from datetime import datetime, date
 from predictor import Prediction, Detail
+from functools import partial
+import ast,webbrowser,csv, requests
+import pandas as pd
+
 
 
 class BackgroundLayout(FloatLayout):
@@ -166,8 +172,176 @@ class SchedulerWindow(Screen):
         
 
 class HospitalWindow(Screen):
+    dropdown_menus = {}
     def on_enter(self):
+        init =0.6
+        self.ids.hospitalList.clear_widgets()
+        nameList = self.readData("dataset\hospitals.csv")
+        for name, address, coordinates in zip(nameList[0], nameList[1], nameList[3]):
+            
+            item = TwoLineListItem(
+            text=name,
+            secondary_text = address
+                            )
+            button = MDFlatButton(text = "view in map", pos_hint = {"top": init, 'x': 0.93},
+                                   on_release= partial(self.view_in_map, name))
+            item.add_widget(button)
+            self.ids.hospitalList.add_widget(item)
+            init+=0.04
+    
+            
+    
+    def view_in_map(self, name, *args):
+        nameList = self.readData("dataset\hospitals.csv")
+        for names in nameList[0]:
+            if name == names:
+                nameIndex = nameList[0].index(names)
+                latlon = nameList[-1][nameIndex]
+                latlon = ast.literal_eval(latlon)
+                lat = latlon[0]
+                lon = latlon[1]
+                url = f"https://www.google.com/maps/search/?api=1&query={lat},{lon}"
+                webbrowser.open(url)
+
+    
+    def show_sort_popup(self):
+        sort_items = [
+            {
+                "text": "sort by name",
+                "on_release": lambda: self.sort_by_name(),
+            },
+             {
+                "text": "sort by distance",
+                "on_release": lambda: self.sort_by_distance(),
+            } 
+        ]
+        MDDropdownMenu(
+            caller=self.ids.sort, items=sort_items
+        ).open()
+
+    def sort_by_name(self):
+        self.ids.hospitalList.clear_widgets()
+        nameList = self.read_csv("dataset\hospitals.csv")
+        self.merge_sort(nameList, key='Name')
+        self.write_csv("dataset\hospitalstd.csv",nameList)
+        
+        nameList = self.readData("dataset\hospitalstd.csv")
+        for name, address in zip(nameList[0], nameList[1]):
+            self.ids.hospitalList.add_widget(
+            TwoLineListItem(
+            text=name,
+            secondary_text = address
+                            )
+                            )
+        
+    
+    def sort_by_distance(self):
+        add = requests.get("https://api.ipify.org").text 
+        url = "https://get.geojs.io/v1/ip/geo/" + add + ".json"
+        geo_request = requests.get(url)
+        geo_data = geo_request.json()
+        g=[float(geo_data['latitude']), float(geo_data['longitude'])]
+        #g=[27.664077, 85.341975] 
+        df = pd.read_csv("dataset\hospitals.csv", encoding="ISO-8859-1")
+        nameList = self.readData("dataset\hospitals.csv")
+        distanceList = []
+        for coordinates in nameList[3]:
+            coordinates = ast.literal_eval(coordinates)
+            distance = ((g[0]- coordinates[0])**2 + (g[1]- coordinates[1])**2)**(1/2)
+            distanceList.append(distance)
+        df['distance'] = distanceList
+        df.to_csv("dataset\hospitalstd.csv", index=False)
+
+        self.ids.hospitalList.clear_widgets()
+        nameList = self.read_csv("dataset\hospitalstd.csv")
+        self.merge_sort(nameList, key='distance')
+        self.write_csv("dataset\hospitalstd.csv",nameList)
+        
+        nameList = self.readData("dataset\hospitalstd.csv")
+        for name, address in zip(nameList[0], nameList[1]):
+            self.ids.hospitalList.add_widget(
+            TwoLineListItem(
+            text=name,
+            secondary_text = address
+                            )
+                            )
+        
+        
+
+    def searchHospital(self, searchIndex):
+        searchText = self.ids.search_hospital.text
+        self.ids.hospitalList.clear_widgets()
+        nameList = self.readData("dataset\hospitals.csv")
+        for name, address in zip(nameList[0], nameList[1]):
+            searchWhat = name if searchIndex == 0 else address
+            if searchText.lower() in searchWhat.lower():
+                self.ids.hospitalList.add_widget(
+                TwoLineListItem(
+                text=name,
+                secondary_text = address
+                                )
+                                )
+                
+    def toggleSearch(self):
+
+        if self.ids.search_hospital.hint_text == "Search by Address":
+            self.ids.search_hospital.hint_text = "Search by Name"
+        else:
+            self.ids.search_hospital.hint_text= "Search by Address"
+
+    
+
+    def readData(self, filename):
+        df = pd.read_csv(filename, encoding="ISO-8859-1")
+        data_list = df.T.values.tolist()
+        return data_list
+          
+    def on_start(self):
         pass
+
+    def merge_sort(self, arr, key):
+        if len(arr) > 1:
+            mid = len(arr) // 2
+            left_half = arr[:mid]
+            right_half = arr[mid:]
+
+            self.merge_sort(left_half, key)
+            self.merge_sort(right_half, key)
+
+            i = j = k = 0
+
+            while i < len(left_half) and j < len(right_half):
+                if left_half[i][key] < right_half[j][key]:
+                    arr[k] = left_half[i]
+                    i += 1
+                else:
+                    arr[k] = right_half[j]
+                    j += 1
+                k += 1
+
+            while i < len(left_half):
+                arr[k] = left_half[i]
+                i += 1
+                k += 1
+
+            while j < len(right_half):
+                arr[k] = right_half[j]
+                j += 1
+                k += 1
+
+    def read_csv(self,filename):
+        data = []
+        with open(filename, 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                data.append(row)
+        return data
+        
+    def write_csv(self,filename, data):
+        with open(filename, 'w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=data[0].keys())
+            writer.writeheader()
+            writer.writerows(data)
 
 
 class ContentDialog(Popup):
