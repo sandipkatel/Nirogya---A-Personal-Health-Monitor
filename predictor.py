@@ -1,85 +1,97 @@
 # predictor.py
-
 from manager import DataManager 
 
-dm = DataManager()
-df1 = dm.load_and_process_data("dataset/AdditionalSet/testing.csv", "output1.csv")
+class Prediction:
+    def __init__(self):
+        self.dm = DataManager()
+        self.df = self.dm.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv")
+    def get_columns(self):
+        """return the columns label"""
+        return self.df.columns()
 
-def get_disease_probability(symptoms):
-    """return diseases dictionary with their probability"""
-    df = dm.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv", set_index= True)
-    total_sym = len(symptoms)
-    diseases = df[df[symptoms].isin([1]).all(axis=1)].index.tolist()
-    probabal_dis = {}
-    for dis_index, dis_value in diseases:
-        sum_sym = df.iloc[dis_index].sum()
-        if dis_value not in probabal_dis:
-            # calculate probablity = (total no. of selected symtoms) / (tota no. of symptoms of that disease) 
-            probabal_dis[dis_value] = (total_sym / sum_sym)**2
+    def get_disease_probability(self, symptoms):
+        """return diseases dictionary with their probability"""
+        diseases = self.df.find_diseases(symptoms)
+        total_sym = len(symptoms)
+        probabal_dis = {}
+        for dis_label, sum_sym in diseases:
+            if dis_label not in probabal_dis:
+                probabal_dis[dis_label] = (total_sym / sum_sym)**2
+            else:
+                probabal_dis[dis_label] += (total_sym / sum_sym)**2
+        
+        total_probablity = sum(probabal_dis.values())
+        for dis, probablity in probabal_dis.items():
+            probabal_dis[dis] = probablity * 100/total_probablity
+
+        sorted_probabal_dis = sorted(probabal_dis.items(), key=lambda x: x[1], reverse = True)
+        return sorted_probabal_dis
+
+    def predict_dis(self, symptomList):
+        """predict the disease according to selected symptoms"""
+        probabal_diseases = self.get_disease_probability(symptomList)
+        
+        if len(probabal_diseases) >= 10:
+            return "Please provide sufficient data."
+        elif len(probabal_diseases) == 0:
+            return "Sorry, the symptoms are not compatible with any disease."
         else:
-            probabal_dis[dis_value] += (total_sym / sum_sym)**2
-    
-    total_probablity = sum(probabal_dis.values())
-    for dis, probablity in probabal_dis.items():
-        probabal_dis[dis] = probablity * 100/total_probablity
+            result = "Probable disease:\n"
+            i = 0
+            for i, (dis, per) in enumerate(probabal_diseases, start=1):
+                result += "{}. {:<40}{:.2f}%\n".format(i, dis, per)
+            return result
 
-    sorted_probabal_dis = sorted(probabal_dis.items(), key=lambda x: x[1], reverse = True)
-    return sorted_probabal_dis
+class Detail:
+    def __init__(self):
+        self.dm = DataManager()
+        self.disease = None
 
-def get_symptoms(disease):
-    """Return the symptoms of the given disease."""
-    try:
-        return df1.columns[df1.loc[disease.title()].astype(bool)].tolist()
-    except KeyError:
+    def _get_descriptions(self, disease):
+        """return short description of disease"""
+        dcr = self.dm.load_and_process_data("dataset/AdditionalSet/description.csv")
         try:
-            return df1.columns[df1.loc[disease.upper()].astype(bool)].tolist()
-        except KeyError:
+            description = dcr.find_internal_data(disease.title())
+            self.disease = disease.title()
+            return description
+        except AttributeError:
+            try:
+                description = dcr.find_internal_data(disease.upper())
+                self.disease = disease.upper()
+                return description
+            except AttributeError:
+                return None
+
+    def _get_symptoms(self):
+        """Return the symptoms of the given disease."""
+        sym = self.dm.load_and_process_data("dataset/AdditionalSet/testing.csv")
+        symptoms = sym.find_symptoms(self.disease)
+        return symptoms
+
+    def _get_preventions_and_cures(self):
+        """return the prevention and cure of provided disease"""
+        pv = self.dm.load_and_process_data("dataset/AdditionalSet/prevention.csv")
+        preventions = pv.find_internal_data(self.disease)
+        cure = self.dm.load_and_process_data("dataset/AdditionalSet/cure.csv")
+        cures = cure.find_internal_data(self.disease)
+        return preventions, cures
+
+
+    def dis_description(self, disease):
+        """return the symptoms of selected disease"""
+        description = self._get_descriptions(disease)
+        if description:
+            format_description = "\n" + "\n".join([f"  {describe}" for describe in description])
+            return format_description
+        else:
             return None
 
-def show_prevention_and_cure(disease):
-    """return the prevention and cure of provided disease"""
-    pc = dm.load_and_process_data("dataset/AdditionalSet/prevention_and_cure.csv", "output2.csv")
-    
-    try:
-        preventions = pc.loc[disease.title()]["Prevention"].split(";")
-        cures = pc.loc[disease.title()]["Cure/Treatment"].split(";")
-    except KeyError:
-        preventions = pc.loc[disease.upper()]["Prevention"].split(";")
-        cures = pc.loc[disease.upper()]["Cure/Treatment"].split(";")
-    except KeyError:
-        raise KeyError("Could not find disease in data set")
-
-    return preventions, cures
-
-def predict_dis(symptomList):
-    """predict the disease according to selected symptoms"""
-    probabal_diseases = get_disease_probability(symptomList)
-    
-    if len(probabal_diseases) >= 10:
-        return "Please provide sufficient data."
-    elif len(probabal_diseases) == 0:
-        return "Sorry, the symptoms are not compatible with any disease."
-    else:
-        result = "Probable disease:\n"
-        i = 0
-        for i, (dis, per) in enumerate(probabal_diseases, start=1):
-            result += "{}. {:<40}{:.2f}%\n".format(i, dis, per)
-        return result
-
-def dis_symptoms(disease):
-    """return the symptoms of selected disease"""
-    symptoms = get_symptoms(disease.capitalize())
-    if symptoms:
-        format_symptoms = "Symptoms:\n"
-        for i, dis in enumerate(symptoms):
-            format_symptoms += f"  {i + 1}.  {dis}\n"
-        return format_symptoms
-    else:
-        return None
-
-def get_prevention_and_cure(disease):
-    """return the prevention and cure of provided disease"""
-    preventions, cures = show_prevention_and_cure(disease)
-    prevention_text = "\n\nPrevention:\n" + "\n".join([f"  {i + 1}. {prevention}" for i, prevention in enumerate(preventions)])
-    cure_text = "\n\nCure/Treatment:\n" + "\n".join([f"  {i + 1}. {cure}" for i, cure in enumerate(cures)])
-    return prevention_text, cure_text
+    def dis_detail(self):
+        """return the detail of provided disease"""
+        symptoms = self._get_symptoms()
+        symptom_text = "\n\nSymptoms:\n" + "\n".join([f"  {i + 1}. {symptom}" for i, symptom in enumerate(symptoms)])
+        preventions, cures = self._get_preventions_and_cures()
+        prevention_text = "\n\nPreventive Measures:\n" + "\n".join([f"  {i + 1}. {prevention}" for i, prevention in enumerate(preventions)])
+        cure_text = "\n\nCures/Treatments:\n" + "\n".join([f"  {i + 1}. {cure}" for i, cure in enumerate(cures)])
+        print("Executed Succssfully detailed")
+        return symptom_text, prevention_text, cure_text

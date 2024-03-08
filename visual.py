@@ -12,12 +12,10 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
-# from kivy.properties import ObjectProperty
 from kivy.metrics import dp
 from scheduler import AppointmentScheduler
-# import predictor as pr
 from datetime import datetime, date
-from predictor1 import Prediction, Detail
+from predictor import Prediction, Detail
 
 
 class BackgroundLayout(FloatLayout):
