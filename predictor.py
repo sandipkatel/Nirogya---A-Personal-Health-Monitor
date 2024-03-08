@@ -38,7 +38,7 @@ def get_symptoms(disease):
 
 def show_prevention_and_cure(disease):
     """return the prevention and cure of provided disease"""
-    pc = dm.load_and_process_data("dataset/AdditionalSet/pervention_and_cure.csv", "output2.csv")
+    pc = dm.load_and_process_data("dataset/AdditionalSet/prevention_and_cure.csv", "output2.csv")
     
     try:
         preventions = pc.loc[disease.title()]["Prevention"].split(";")
