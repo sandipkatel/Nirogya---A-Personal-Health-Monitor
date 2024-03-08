@@ -1,4 +1,5 @@
 # manager2.py
+import csv
 from AVLTree import AVLTree
 
 class DataManager:
@@ -9,26 +10,26 @@ class DataManager:
         self.data = AVLTree()
         self.columns = []
 
-    def load_and_process_data(self, source_filename, dest_filename):
+    def load_and_process_data(self, source_filename, dest_filename=None):
         self.clear_data()
         with open(source_filename, 'r') as file:
-            # Read header to extract column names
-            header = file.readline().strip().split(',')
+            csv_reader = csv.reader(file)
+            header = next(csv_reader)  # Read the header row
             self.columns = header
-            # Skip header and read data
-            for line in file:
-                row = line.strip().split(',')
+            # Read data rows
+            for row in csv_reader:
                 row[0] = row[0].title() if row[0] != row[0].upper() else row[0]
                 self.data.insert(row)
 
-
-        # Save the modified data to a new CSV file
-        with open(dest_filename, 'w') as file:
-            # Write header
-            file.write(','.join(self.columns) + '\n')
-            for data_row in self.data.get_data():
-                converted_data = [str(item) if not isinstance(item, str) else item for item in data_row]
-                file.write(','.join(converted_data) + '\n')
+        if dest_filename:
+            with open(dest_filename, 'w') as file:
+                csv_writer = csv.writer(file)
+                # Write header
+                csv_writer.writerow(self.columns)
+                # Write data
+                for data_row in self.data.get_data():
+                    converted_data = [str(item) if not isinstance(item, str) else item for item in data_row]
+                    csv_writer.writerow(converted_data)
 
         # Simulating DataFrame behavior by providing similar interface
         class DataFrameLike:

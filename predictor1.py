@@ -5,7 +5,6 @@ class Prediction:
     def __init__(self):
         self.dm = DataManager()
         self.df = self.dm.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv")
-
     def get_columns(self):
         """return the columns label"""
         return self.df.columns()
@@ -42,7 +41,7 @@ class Prediction:
             for i, (dis, per) in enumerate(probabal_diseases, start=1):
                 result += "{}. {:<40}{:.2f}%\n".format(i, dis, per)
             return result
-            
+
 class Detail:
     def __init__(self):
         self.dm = DataManager()
@@ -50,50 +49,49 @@ class Detail:
 
     def _get_descriptions(self, disease):
         """return short description of disease"""
-        dcr = self.dm.load_and_process_data("dataset/AdditionalSet/description.csv", "output1.csv")
+        dcr = self.dm.load_and_process_data("dataset/AdditionalSet/description.csv")
         try:
             description = dcr.find_internal_data(disease.title())
             self.disease = disease.title()
             return description
-        except KeyError:
+        except AttributeError:
             try:
-                description = df.find_internal_data(disease.upper())
+                description = dcr.find_internal_data(disease.upper())
                 self.disease = disease.upper()
                 return description
-            except KeyError:
+            except AttributeError:
                 return None
 
     def _get_symptoms(self):
         """Return the symptoms of the given disease."""
-        sym = self.dm.load_and_process_data("dataset/AdditionalSet/testing.csv", "output1.csv")
-        symptoms = self.sym.find_symptoms(self.disease)
-
+        sym = self.dm.load_and_process_data("dataset/AdditionalSet/testing.csv")
+        symptoms = sym.find_symptoms(self.disease)
         return symptoms
 
     def _get_preventions_and_cures(self):
         """return the prevention and cure of provided disease"""
-        pv = self.dm.load_and_process_data("dataset/AdditionalSet/prevention.csv", "output3.csv")
+        pv = self.dm.load_and_process_data("dataset/AdditionalSet/prevention.csv")
         preventions = pv.find_internal_data(self.disease)
-        cure = self.dm.load_and_process_data("dataset/AdditionalSet/prevention.csv", "output3.csv")
+        cure = self.dm.load_and_process_data("dataset/AdditionalSet/cure.csv")
         cures = cure.find_internal_data(self.disease)
-
-        return prevention, cure
+        return preventions, cures
 
 
     def dis_description(self, disease):
         """return the symptoms of selected disease"""
         description = self._get_descriptions(disease)
         if description:
-            format_description += f"\n\n {description}"
+            format_description = "\n" + "\n".join([f"  {describe}" for describe in description])
             return format_description
         else:
             return None
 
     def dis_detail(self):
         """return the detail of provided disease"""
-        symptoms = self.get_symptoms()
+        symptoms = self._get_symptoms()
         symptom_text = "\n\nSymptoms:\n" + "\n".join([f"  {i + 1}. {symptom}" for i, symptom in enumerate(symptoms)])
-        preventions, cures = self.get_prevention_and_cure()
+        preventions, cures = self._get_preventions_and_cures()
         prevention_text = "\n\nPreventive Measures:\n" + "\n".join([f"  {i + 1}. {prevention}" for i, prevention in enumerate(preventions)])
         cure_text = "\n\nCures/Treatments:\n" + "\n".join([f"  {i + 1}. {cure}" for i, cure in enumerate(cures)])
-        return symptom_prevention_text, cure_text
+        print("Executed Succssfully detailed")
+        return symptom_text, prevention_text, cure_text

@@ -73,12 +73,12 @@ class SymptomsWindow(Screen):
         result = dtl.dis_description(disease)
         if result:
             self.ids.all_info.text = result
-            symptoms, prevention, cure = dtl.dis_detaile()
+            symptoms, prevention, cure = dtl.dis_detail()
             self.ids.all_info.text += symptoms
             self.ids.all_info.text += prevention
             self.ids.all_info.text += cure
         else:
-            self.ids.symptoms.text = f"Sorry, unable to find any disease named {disease} in dataset."
+            self.ids.all_info.text = f"Sorry, unable to find any disease named {disease} in dataset."
 
 class Content(BoxLayout):
     pass
