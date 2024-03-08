@@ -4,6 +4,8 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.checkbox import CheckBox
+from kivymd.uix.selectioncontrol import MDCheckbox
+from kivymd.uix.label import MDLabel
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivymd.uix.button import MDFlatButton
@@ -25,6 +27,20 @@ class BackgroundLayout(FloatLayout):
 class HomeWindow(Screen):
     pass
 
+            
+class SymptomCheckbox(MDCheckbox):
+    def __init__(self, symptom, **kwargs):
+        super(SymptomCheckbox, self).__init__(**kwargs)
+        self.symptom = symptom
+        self.size_hint_x = None
+        self.width = dp(30)
+        self.on_release = self.toggle_checkbox_color
+
+    def toggle_checkbox_color(self):
+        if self.active:
+            self.color = (0, 0, 1, 1)  # Change color to red when checked
+        else:
+            self.color = (0, 0, 0, 1)
 
 class PredictorWindow(Screen):
     def predict_disease(self):
@@ -44,20 +60,14 @@ class PredictorWindow(Screen):
             self.ids.symptom_container.clear_widgets()
 
             for symptom in symptoms_list:
-                symptom_layout = BoxLayout(
-                    orientation='horizontal', size_hint_y=None, height=dp(20))
+                symptom_checkbox = SymptomCheckbox(symptom)
+                symptom_label = MDLabel(text=symptom)
 
-                label = Label(text=symptom, size_hint_x=0.8)
-                checkbox = CheckBox()
+                layout = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40))
+                layout.add_widget(symptom_checkbox)
+                layout.add_widget(symptom_label)
 
-                self.ids[symptom + '_label'] = label
-                self.ids[symptom + '_checkbox'] = checkbox
-                symptom_layout.add_widget(label)
-                symptom_layout.add_widget(checkbox)
-
-                self.ids.symptom_container.add_widget(symptom_layout)
-        else:
-            print("Symptoms list is empty or None")
+                self.ids.symptom_container.add_widget(layout)
 
 
 class SymptomsWindow(Screen):
