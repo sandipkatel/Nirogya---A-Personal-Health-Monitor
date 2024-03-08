@@ -1,0 +1,42 @@
+Disease,Cure_1,Cure_2,Cure_3,Cure_4
+Vertigo (Paroxysmal Positional Vertigo),Epley maneuver,Brandt-Daroff exercises,Canalith repositioning procedure (CRP),Vestibular rehabilitation exercises
+AIDS,Highly Active Antiretroviral Therapy (HAART),"Preventive measures (safe sex, needle exchange programs)",Supportive care,Psychosocial support
+Acne,Topical retinoids,Oral antibiotics,Salicylic acid or benzoyl peroxide,Light therapy (laser or photodynamic therapy)
+Alcoholic Hepatitis,Abstinence from alcohol,"Medications (corticosteroids, pentoxifylline)",Nutritional support,Liver transplantation (in severe cases)
+Allergy,Avoidance of allergens,Oral antihistamines,Intranasal corticosteroids,Emergency epinephrine (for severe allergic reactions)
+Arthritis,Physical therapy,Nonsteroidal anti-inflammatory drugs (NSAIDs),Disease-modifying antirheumatic drugs (DMARDs),Biologic response modifiers
+Bronchial Asthma,"Inhaled bronchodilators (beta-agonists, anticholinergics)",Inhaled corticosteroids,Leukotriene modifiers,Immunotherapy (for allergic asthma)
+Cervical Spondylosis,Physical therapy,Nonsteroidal anti-inflammatory drugs (NSAIDs),Muscle relaxants,Neck exercises
+Chicken Pox,"Supportive care (hydration, antipyretics)",Antiviral medications (acyclovir),Calamine lotion,Rest and isolation
+Chronic Cholestasis,"Treat underlying cause (e.g., gallstones, liver disease)",Ursodeoxycholic acid,Cholestyramine,Pruritus management
+Common Cold,Rest,Hydration,Decongestants,Analgesics (for pain and fever)
+Dengue,Fluid replacement therapy,Rest,Paracetamol (for fever and pain),Avoiding NSAIDs (to prevent bleeding)
+Diabetes,Insulin or oral antidiabetic medications,Dietary management (carbohydrate counting),Regular exercise,Monitoring blood sugar levels
+Dimorphic Hemorrhoids (Piles),High-fiber diet,Topical creams or ointments,Sitz baths (warm water baths),Avoiding straining during bowel movements
+Drug Reaction,Discontinuing the offending drug,"Supportive care (antihistamines, corticosteroids)",Avoiding the trigger,Seeking medical attention
+Fungal Infection,Antifungal medications (topical or oral),Keeping the affected area dry and clean,Avoiding tight clothing,Changing socks and shoes regularly
+GERD,"Lifestyle modifications (elevating head during sleep, avoiding trigger foods)",Antacids,Proton pump inhibitors,H2 blockers
+Gastroenteritis,Oral rehydration solution (ORS),Avoiding solid foods initially,Gradually reintroducing bland foods,Rest and hydration
+Heart Attack,Immediate medical attention (calling emergency services),Aspirin (if not allergic),Nitroglycerin (if prescribed),Thrombolytic therapy (if applicable)
+Hepatitis A,Rest,Hydration,Supportive care,"Preventive measures (vaccination, hygiene)"
+Hepatitis B,"Antiviral medications (tenofovir, entecavir)",Interferon injections,Supportive care,Preventive measures (vaccination)
+Hepatitis C,Direct-acting antiviral medications,Supportive care,Regular monitoring,Preventive measures (avoiding sharing needles)
+Hepatitis D,Interferon injections,Supportive care,Preventive measures (vaccination),Avoiding alcohol and hepatotoxic substances
+Hepatitis E,Rest,Hydration,Supportive care,"Preventive measures (safe water, hygiene)"
+Hypertension,"Medications (diuretics, beta-blockers, ACE inhibitors)","Lifestyle changes (exercise, low-sodium diet)",Stress management,Regular blood pressure monitoring
+Hyperthyroidism,"Antithyroid medications (methimazole, propylthiouracil)",Beta-blockers (for symptom relief),Radioactive iodine therapy,Thyroidectomy (in severe cases)
+Hypoglycemia,Consuming glucose or simple carbohydrates,Regular meals and snacks,Monitoring blood sugar levels,Adjusting insulin or medication doses
+Hypothyroidism,Thyroid hormone replacement (levothyroxine)","Lifestyle modifications (healthy diet, exercise)",Regular follow-up with healthcare provider,Managing stress
+Impetigo,Topical antibiotics (mupirocin),Oral antibiotics (if severe),Keeping affected areas clean,Rest and hygiene
+Jaundice,"Treat underlying cause (e.g., hepatitis virus)",Phototherapy,Supportive care,Taking adequate rest
+Malaria,"Antimalarial medications (chloroquine, artemisinin-based combination therapy)",Preventive measures (insecticide-treated bed nets),Hydration,Rest
+Migraine,"Identifying triggers (e.g., stress, certain foods)","Pain relief medications (analgesics, triptans)","Lifestyle modifications (regular sleep, hydration)",Avoiding triggers
+Osteoarthritis,Physical therapy,Nonsteroidal anti-inflammatory drugs (NSAIDs),Weight management,"Assistive devices (cane, brace)"
+Paralysis (Brain Hemorrhage),Immediate medical attention (calling emergency services),Supportive care (stabilizing vital signs),"Rehabilitation (physical therapy, occupational therapy)","Managing complications (pressure sores, infections)"
+Peptic Ulcer Disease,"Acid-suppressing medications (proton pump inhibitors, H2 blockers)",Antibiotics (if caused by H. pylori),"Avoiding irritants (alcohol, spicy foods)",Stress management
+Pneumonia,Antibiotics (based on the causative agent),Rest,Hydration,"Supportive care (fever reducers, cough suppressants)"
+Psoriasis,Topical corticosteroids,Phototherapy (UVB or PUVA),"Systemic medications (methotrexate, cyclosporine)","Biologic drugs (TNF inhibitors, IL-17 inhibitors)"
+Tuberculosis,"Antitubercular medications (isoniazid, rifampin, pyrazinamide, ethambutol)",Directly Observed Treatment Short-course (DOTS),"Supportive care (nutrition, rest)",Contact tracing and preventive therapy
+Typhoid,"Antibiotics (ciprofloxacin, azithromycin)",Hydration,Rest,"Preventive measures (sanitation, vaccination)"
+Urinary Tract Infection,Fluid intake,Proper hygiene (wiping front to back),Antibiotics (based on culture results),"Avoiding irritants (caffeine, alcohol)"
+Varicose Veins,Compression stockings,Elevating legs,Exercise,Weight management

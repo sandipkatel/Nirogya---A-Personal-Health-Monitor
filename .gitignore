@@ -11,8 +11,7 @@ test*.*
 QuickSort.py
 Untitled.ipynb
 main1.py
-style1.py
-*.csv
+output*.csv
 tempCodeRunnerFile.py
 style*.*
 # Ignore ownself

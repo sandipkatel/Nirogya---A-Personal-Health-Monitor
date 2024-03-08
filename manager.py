@@ -1,6 +1,6 @@
 # manager2.py
 import csv
-from AVLTree import AVLTree
+from DSA_Stuff.AVLTree import AVLTree
 
 class DataManager:
     def __init__(self):
