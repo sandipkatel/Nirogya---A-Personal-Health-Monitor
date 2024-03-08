@@ -210,43 +210,58 @@
 <HospitalWindow>:
     name: "hospital"
     Screen:
-        MDTopAppBar:
-            title: "Hospital Nearby Me"
-            pos_hint: {"top": 1}
-        BoxLayout:
-            orientation: 'vertical'
-            size_hint_y: None
-            height: self.minimum_height
-            spacing: dp(10)
-            padding: dp(10)
-
-            MDTextField:
-                hint_text: "Search Hospital"
-                icon_right: "magnify"
-                icon_right_color: app.theme_cls.primary_color
-                pos_hint: {"top": 1}
+        RelativeLayout:
+            MDTopAppBar:
+                id: topappbar
+                orientation: "vertical"
+                title: "Hospital Nearby Me"
+                pos_hint: {"top" : 1}
+                elevation: 1
+                size_hint: 1, None
+                height: "56dp"  
+                left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'home')]]
             
-            ScrollView:
-                pos_hint: {"top": 2}
-                size_hint_y: None
+            MDScrollView:
+                pos_hint: {"top": 0.9, "bottom": 0.1}
+                
                 MDList:
-                    OneLineAvatarListItem:
-                        text: "Hospital Name"
-                        secondary_text: "address"
-                    OneLineAvatarListItem:
-                        text: "Hospital Name"
-                        secondary_text: "address"
-                    OneLineAvatarListItem:
-                        text: "Hospital Name"
-                        secondary_text: "address"
-                    OneLineAvatarListItem:
-                        text: "Hospital Name"
-                        secondary_text: "address"
-                    OneLineAvatarListItem:
-                        text: "Hospital Name"
-                        secondary_text: "address"
-                        
-                   
+                    
+                    id: hospitalList
+                    spacing: dp(10)
+                    size_hint: 0.75, None
+                    height: root.height * 0.85
 
-              
+            BoxLayout:
+                size_hint_y: None  
+                height: "56dp"     
+                pos_hint: {"bottom": 1}  
+                elevation : 20
+                spacing: 10
+                padding: 10
+                
+
+                MDTextField:
+                    mode: "fill"
+                    fill_color: 0,0,0,1
+                    id: search_hospital
+                    hint_text: "Search by Name"
+                    size_hint:None, None
+                    width: "240dp"
+                    on_text: root.searchHospital(0) if self.hint_text == "Search by Name" else root.searchHospital(1)
+                
+                MDIconButton:
+                    icon: "card-search"
+                    text: "Sort"
+                    id: sort
+                    text : "sort by name"
+                    size_hint_x: None
+                    on_press: root.toggleSearch()
+
+                MDIconButton:
+                    icon: "sort"
+                    text: "Sort"
+                    id: sort
+                    text : "sort by name"
+                    size_hint_x: None
+                    on_press: root.show_sort_popup()
 
