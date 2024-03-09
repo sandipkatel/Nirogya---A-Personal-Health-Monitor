@@ -49,6 +49,30 @@
                     size: root.width * 0.4, root.height * 0.1
                     on_release:
                         app.root.current = "symptoms"
+
+                MDRectangleFlatButton:
+                    text: "Daily Data"
+                    background_color: 0, 0, 1, 1  # Blue button
+                    size_hint: None, None
+                    size: root.width * 0.4, root.height * 0.1
+                    on_release:
+                        app.root.current = "data"
+
+                MDRectangleFlatButton:
+                    text: "Blood Data"
+                    background_color: 0, 0, 1, 1  # Blue button
+                    size_hint: None, None
+                    size: root.width * 0.4, root.height * 0.1
+                    on_release:
+                        app.root.current = "blood"
+
+                MDRectangleFlatButton:
+                    text: "Graph"
+                    background_color: 0, 0, 1, 1  # Blue button
+                    size_hint: None, None
+                    size: root.width * 0.4, root.height * 0.1
+                    on_release:
+                        app.root.current = "graph"
                     
                 MDRectangleFlatButton:
                     text: "Scheduler"
@@ -265,3 +289,163 @@
                     size_hint_x: None
                     on_press: root.show_sort_popup()
 
+
+
+<DataWindow>:
+    name: "data"
+    Screen:
+        MDTextField:
+            id: water
+            hint_text: "Water intake"
+            pos_hint: {"center_x":0.67, "center_y":0.52}
+            size_hint_x: 0.2
+            width:60
+
+        MDTextField:
+            id: screen
+            hint_text: "Screen time"
+            pos_hint: {"center_x":0.67, "center_y":0.62}
+            size_hint_x: 0.2
+            width:60
+        MDTextField:
+            id: weight
+            hint_text: "weight"
+            pos_hint: {"center_x":0.67, "center_y":0.72}
+            size_hint_x: 0.2
+            width:60
+        MDTextField:
+            id: pressure
+            hint_text: "Pressure"
+            pos_hint: {"center_x":0.67, "center_y":0.82}
+            size_hint_x: 0.2
+            width:60
+
+        MDRectangleFlatButton:
+            text: "Back"
+            background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
+            size_hint: None, None
+            size: root.width * 0.1, root.height * 0.05
+            pos_hint: {"x": 0.05, "y": 0.9}
+            on_release: app.root.current = "home"
+
+        MDRaisedButton
+            text: "Submit"
+            size_hint: (None, None)
+            size: (150, 60)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            on_press: root.click()
+            on_release: app.root.current = "home"
+
+
+
+<BloodWindow>:
+    name: "blood"
+    Screen:
+        MDTextField:
+            id: RBC
+            hint_text: "RBC"
+            pos_hint: {"center_x":0.67, "center_y":0.52}
+            size_hint_x: 0.2
+            width:60
+
+        MDTextField:
+            id: WBC
+            hint_text: "WBC"
+            pos_hint: {"center_x":0.67, "center_y":0.62}
+            size_hint_x: 0.2
+            width:60
+        MDTextField:
+            id: Platelets
+            hint_text: "Platelets"
+            pos_hint: {"center_x":0.67, "center_y":0.72}
+            size_hint_x: 0.2
+            width:60
+        MDTextField:
+            id: Haemoglobin
+            hint_text: "Haemoglobin"
+            pos_hint: {"center_x":0.67, "center_y":0.82}
+            size_hint_x: 0.2
+            width:60
+
+        MDRectangleFlatButton:
+            text: "Back"
+            background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
+            size_hint: None, None
+            size: root.width * 0.1, root.height * 0.05
+            pos_hint: {"x": 0.05, "y": 0.9}
+            on_release: app.root.current = "home"
+
+        MDRaisedButton
+            text: "Submit"
+            size_hint: (None, None)
+            size: (150, 60)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+            on_press: root.clickk()
+            on_release: app.root.current = "home"
+
+
+
+<GraphWindow>
+    name: "Graph"
+    Screen:
+        MDLabel
+            text: "GRAPH"
+            theme_text_color: "Secondary"
+            font_style:"H2" 
+            pos_hint: {'center_x': 0.7, 'center_y': 0.35}
+        BoxLayout
+            orientation:'vertical'  
+            size: (150, 320)
+            size_hint: (None, None)       
+            pos_hint: {'center_x': 0.5, 'top': 0.8} 
+            spacing: 10
+            padding: 10
+            MDRaisedButton
+                text: "Weight"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("Weight")
+            MDRaisedButton
+                text: "Pressure"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("Pressure")
+            MDRaisedButton
+                text: "Water intake"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("Water")
+            MDRaisedButton
+                text: "Screen_time"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("Screen")
+            MDRaisedButton
+                text: "RBC"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("RBC")
+            MDRaisedButton
+                text: "WBC"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("WBC")
+            MDRaisedButton
+                text: "Haemoglobin"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("Haemoglobin")
+            MDRaisedButton
+                text: "Platelets"
+                size_hint: (None, None)
+                size: (150, 60)
+                pos_hint: {'center_x': 0.5}
+                on_release: root.click("Platelets")
+        

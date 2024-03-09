@@ -25,6 +25,16 @@ from predictor import Prediction, Detail
 from functools import partial
 import ast,webbrowser,csv, requests
 import pandas as pd
+from datetime import datetime
+import subprocess
+from kivymd.uix.datatables import MDDataTable
+import file as fi
+from kivy.uix.anchorlayout import AnchorLayout
+from display import draw
+
+today = datetime.today()
+
+formatted_date = today.strftime("%Y/%m/%d")
 
 
 
@@ -371,6 +381,104 @@ class ContentDialog(Popup):
 
 class WindowManager(ScreenManager):
     pass
+
+
+
+class DataWindow(Screen):
+    def on_enter(self):
+        pass
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        layout=AnchorLayout()
+        table = MDDataTable(
+            pos_hint={'center_x': 0.5, 'top': 0.5},
+            size_hint=(0.7, 0.5),
+            column_data=[
+                ("SN.", dp(30)),
+                ("NAME", dp(30)),
+                ("RANGE", dp(30)),
+                ("UNIT", dp(30))
+                            
+            ],
+            row_data=[
+                ["1", "Pressure", "120/80","mm/HG"],
+                ["2", "Weight", "50","kg"],
+                ["3", "Screen tiime","2-4", "hour"],
+                ["4", "Water intake","2-4", "litre"]
+            ]
+        )
+        layout.add_widget(table)
+
+    def click(self):
+        if(self.ids.pressure.text!= ''):
+            string=formatted_date+":"+self.ids.pressure.text+" mmHg"+"\n"
+            fi.update_last_line("dependecies\Pressure.txt", string)
+
+
+        if(self.ids.weight.text!= ''):
+            string=formatted_date+":"+self.ids.weight.text+"\n"
+            fi.update_last_line("dependecies\Weight.txt", string)
+
+        if(self.ids.screen.text!= ''):
+            string=formatted_date+":"+self.ids.screen.text+"\n"
+            fi.update_last_line("dependecies\Screen.txt", string)
+
+        if(self.ids.water.text!= ''):
+            string=formatted_date+":"+self.ids.water.text+"\n"
+            fi.update_last_line("dependecies\Water.txt", string)
+
+
+
+class BloodWindow(Screen):
+    def on_enter(self):
+        pass
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+
+    def clickk(self):
+        if(self.ids.RBC.text!= ''):
+            string=formatted_date+":"+self.ids.RBC.text+"\n"
+            fi.update_last_line("dependecies\RBC.txt", string)
+
+
+        if(self.ids.WBC.text!= ''):
+            string=formatted_date+":"+self.ids.WBC.text+"\n"
+            fi.update_last_line("dependecies\WBC.txt", string)
+
+        if(self.ids.Platelets.text!= ''):
+            string=formatted_date+":"+self.ids.Platelets.text+"\n"
+            fi.update_last_line("dependecies\Platelets.txt", string)
+
+        if(self.ids.Haemoglobin.text!= ''):
+            string=formatted_date+":"+self.ids.Haemoglobin.text+"\n"
+            fi.update_last_line("dependecies\Haemoglobin.txt", string)
+        return
+
+class GraphWindow(Screen):
+    def on_enter(self):
+        pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    def click(self,button_name):
+        if(button_name=="Platelets"):
+            draw("Platelets")
+        if(button_name=="Haemoglobin"):
+            draw("Haemoglobin")
+        if(button_name=="WBC"):
+            draw("WBC")
+        if(button_name=="RBC"):
+            draw("RBC")
+        if(button_name=="Weight"):
+            draw("Weight")
+        if(button_name=="Pressure"):
+            draw("Pressure")
+        if(button_name=="Screen"):
+            draw("Screen")
+        if(button_name=="Water"):
+            draw("Water")
 
 
 # Load the kv file
