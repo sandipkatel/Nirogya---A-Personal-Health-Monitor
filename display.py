@@ -14,7 +14,7 @@ def draw(new_st,month_name):
         day="0"+day
     else:
         day=str(day_integer)
-    new= "dependecies\\"
+    new= "dependencies\\"
     print(day)
     if(new_st=="Platelets"):
         month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))

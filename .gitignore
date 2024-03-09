@@ -14,5 +14,6 @@ main1.py
 output*.csv
 tempCodeRunnerFile.py
 style*.*
+hospital.py
 # Ignore ownself
 # .gitignore

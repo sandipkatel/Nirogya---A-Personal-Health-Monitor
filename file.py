@@ -14,7 +14,3 @@ def update_last_line(file_path, given_string):
     with open(file_path, 'w') as file:
         file.writelines(lines)
 
-# # Example usage
-# file_path = 'example.txt'
-# given_string = 'sradpokharel1234'  # Replace this with your given string
-# update_last_line(file_path, given_string)

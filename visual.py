@@ -56,8 +56,6 @@ class PredictorWindow(Screen):
     selected_symptoms = []
     def predict_disease(self):
         pr = Prediction()
-        #selected_symptoms = [self.ids[symptom + '_label'].text for symptom in MDApp.get_running_app().symptoms_list if
-          #                   self.ids[symptom + '_checkbox'].active]
         if self.selected_symptoms:
             result = pr.predict_dis(self.selected_symptoms)
             self.ids.disease_label.text = result
@@ -70,28 +68,7 @@ class PredictorWindow(Screen):
     def on_enter(self):
         self.selected_symptoms = []
         self.ids.symptom_list.clear_widgets()
-        
-        pass
-        """ symptoms_list = MDApp.get_running_app().symptoms_list
 
-        if symptoms_list:
-            self.ids.symptom_container.clear_widgets()
-
-            for symptom in symptoms_list:
-                symptom_layout = BoxLayout(
-                    orientation='horizontal', size_hint_y=None, height=dp(20))
-
-                label = Label(text=symptom, size_hint_x=0.8)
-                checkbox = CheckBox()
-
-                self.ids[symptom + '_label'] = label
-                self.ids[symptom + '_checkbox'] = checkbox
-                symptom_layout.add_widget(label)
-                symptom_layout.add_widget(checkbox)
-
-                self.ids.symptom_container.add_widget(symptom_layout)
-        else:
-            print("Symptoms list is empty or None") """
 
     def show_add_symptom_dropdown(self):
         if hasattr(self, 'dropdown_menu') and isinstance(self.dropdown_menu, MDDropdownMenu):
@@ -229,7 +206,6 @@ class SchedulerWindow(Screen):
                 data = json.load(file)
             print(time, name)
             self.scheduler.appointments.traverse()
-            # new_data = [appointment for appointment in data if not (name in appointment and str(time) == appointment[name])]
             for appointment in data:
                 if (name in appointment and str(time) == appointment[name]):
                     data.remove(appointment)
@@ -575,20 +551,20 @@ class DataWindow(Screen):
     def click(self):
         if(self.ids.pressure.text!= ''):
             string=formatted_date+":"+self.ids.pressure.text+" mmHg"+"\n"
-            fi.update_last_line("dependecies\Pressure.txt", string)
+            fi.update_last_line("dependencies\Pressure.txt", string)
 
 
         if(self.ids.weight.text!= ''):
             string=formatted_date+":"+self.ids.weight.text+"\n"
-            fi.update_last_line("dependecies\Weight.txt", string)
+            fi.update_last_line("dependencies\Weight.txt", string)
 
         if(self.ids.screen.text!= ''):
             string=formatted_date+":"+self.ids.screen.text+"\n"
-            fi.update_last_line("dependecies\Screen.txt", string)
+            fi.update_last_line("dependencies\Screen.txt", string)
 
         if(self.ids.water.text!= ''):
             string=formatted_date+":"+self.ids.water.text+"\n"
-            fi.update_last_line("dependecies\Water.txt", string)
+            fi.update_last_line("dependencies\Water.txt", string)
 
 
 
@@ -603,20 +579,20 @@ class BloodWindow(Screen):
     def clickk(self):
         if(self.ids.RBC.text!= ''):
             string=formatted_date+":"+self.ids.RBC.text+"\n"
-            fi.update_last_line("dependecies\RBC.txt", string)
+            fi.update_last_line("dependencies\RBC.txt", string)
 
 
         if(self.ids.WBC.text!= ''):
             string=formatted_date+":"+self.ids.WBC.text+"\n"
-            fi.update_last_line("dependecies\WBC.txt", string)
+            fi.update_last_line("dependencies\WBC.txt", string)
 
         if(self.ids.Platelets.text!= ''):
             string=formatted_date+":"+self.ids.Platelets.text+"\n"
-            fi.update_last_line("dependecies\Platelets.txt", string)
+            fi.update_last_line("dependencies\Platelets.txt", string)
 
         if(self.ids.Haemoglobin.text!= ''):
             string=formatted_date+":"+self.ids.Haemoglobin.text+"\n"
-            fi.update_last_line("dependecies\Haemoglobin.txt", string)
+            fi.update_last_line("dependencies\Haemoglobin.txt", string)
         return
 
 class GraphWindow(Screen):

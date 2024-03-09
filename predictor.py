@@ -10,28 +10,6 @@ class Prediction:
         """return the columns label"""
         return self.df.columns()
 
-    ''' def get_disease_probability(self, symptoms):
-        """return diseases dictionary with their probability"""
-        diseases = self.df.find_diseases(symptoms)
-        total_sym = len(symptoms)
-        probabal_dis = {}
-        for dis_label, sum_sym in diseases:
-            if dis_label not in probabal_dis:
-                probabal_dis[dis_label] = (total_sym / sum_sym)**2
-            else:
-                probabal_dis[dis_label] += (total_sym / sum_sym)**2
-        if probabal_dis:
-            probabal_dis["Others"] = 1
-            total_probablity = sum(probabal_dis.values())
-            for dis, probablity in probabal_dis.items():
-                probabal_dis[dis] = probablity * 100/total_probablity
-            other_dis_prob = probabal_dis.pop("Others")
-            sorted_probabal_dis = list(probabal_dis.items())
-            sort_dic(sorted_probabal_dis)
-            sorted_probabal_dis.append(["Others", other_dis_prob])
-            return sorted_probabal_dis
-        else:
-            return None'''
     def get_disease_probability(self, symptoms):
         """Return diseases dictionary with their probability using Baye's theorem of probability"""
         diseases = self.df.find_diseases(symptoms)

@@ -1,8 +1,4 @@
-
-
 from collections import defaultdict
-# from graph import plot_lagrange_interpolation
-# from graph import lagrange_interpolation
 def separeatedata(abc):
     x_values = []
     with open(abc) as f:

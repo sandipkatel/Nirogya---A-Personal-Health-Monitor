@@ -1,13 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
-# from value import separate_by_month
 
 def constant_curve(x, c):
     return np.full_like(x, c)
-
-
-
 
 
 def lagrange_interpolation(x_values, y_values, x_interpolate):
@@ -46,5 +42,3 @@ def plot_lagrange_interpolation(x_values, y_values,constant1,constant2,disp, x_l
     plt.ylabel(y_label)
     plt.grid(True)
     plt.show()
-
-
