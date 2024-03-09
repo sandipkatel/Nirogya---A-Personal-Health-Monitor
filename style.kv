@@ -115,7 +115,7 @@
                             halign: "center"
 
                 MDRectangleFlatButton:
-                    text: "Daily Matrices"
+                    text: "BMI\nCalculator"
                     text_color: 140/255,190/255,214/255,1
                     font_size: sp(12)  
                     halign: 'center'
@@ -123,6 +123,8 @@
                     size_hint: None, None
                     size: root.width * 0.25, root.height * 0.15
                     md_bg_color: 1, 1, 1, 1
+                    on_release:
+                        app.root.current = "bmi"
                     AnchorLayout:
                         anchor_x: "center"
                         MDIcon:
@@ -220,6 +222,64 @@
 <BMIWindow>
     name: "bmi"
     Screen:
+        orientation: "vertical"
+        MDFloatLayout:
+            orientation:"vertical"
+            MDTopAppBar:
+                id: topappbar
+                orientation: "vertical"
+                title: "BMI"
+                pos_hint: {"top" : 1}
+                elevation: 1
+                size_hint: 1, None
+                height: "56dp"  
+                left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'home')]]
+            MDBoxLayout:
+                id: tablebox
+                orientation: 'vertical'
+                spacing: "2dp"
+                size_hint:(1,1)
+                pos_hint: {"center_x": 0.5, "center_y": 0.9}
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    size_hint_x: None
+                    spacing: "2dp"
+                    MDTextField:
+                        id: bmi_height
+                        hint_text: "Height"
+                        size_hint: None, None
+                        width: root.width*0.8
+                        pos_hint: {"center_x": 0.5}
+                    MDFlatButton:
+                        id: drop_down_menu
+                        text: 'Unit'
+                        size_hint_y: None
+                        height: root.height*0.05
+                        pos_hint: {'center_x': .5, 'center_y': .1}
+                        on_release: root.menu.open()
+
+                MDTextField:
+                    id: bmi_weight
+                    size_hint: None, None
+                    width: root.width*0.8
+                    hint_text: "Weight"
+                    pos_hint: {"center_x": 0.4}
+                    
+                MDRectangleFlatButton:
+                    text: "Calculate"
+                    background_color: 1, 0, 0, 1  # Red button
+                    on_release: root.calculate()
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.05
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                MDLabel:
+                    halign:"center"
+                    id:bmi_label
+                    text:""
+                    size_hint_y: None
+                    height: "40dp"
+            MDBoxLayout:
+                id: layout
         
 <PredictorWindow>:
     name: "predictor"
