@@ -392,8 +392,8 @@ class DataWindow(Screen):
         super().__init__(**kw)
         layout=AnchorLayout()
         table = MDDataTable(
-            pos_hint={'center_x': 0.5, 'top': 0.5},
-            size_hint=(0.7, 0.5),
+            pos_hint={'center_x': 0.6, 'top': 0.2},
+            size_hint=(1, 1),
             column_data=[
                 ("SN.", dp(30)),
                 ("NAME", dp(30)),
@@ -464,21 +464,61 @@ class GraphWindow(Screen):
         super().__init__(**kwargs)
     def click(self,button_name):
         if(button_name=="Platelets"):
-            draw("Platelets")
+            MonthWindow.what="Platelets"
+            self.manager.current = "month"
         if(button_name=="Haemoglobin"):
-            draw("Haemoglobin")
+            MonthWindow.what="Haemoglobin"
+            self.manager.current = "month"
         if(button_name=="WBC"):
-            draw("WBC")
+            MonthWindow.what="WBC"
+            self.manager.current = "month"
         if(button_name=="RBC"):
-            draw("RBC")
+            MonthWindow.what="RBC"
+            self.manager.current = "month"
         if(button_name=="Weight"):
-            draw("Weight")
+            MonthWindow.what="Weight"
+            self.manager.current = "month"
         if(button_name=="Pressure"):
-            draw("Pressure")
+            MonthWindow.what="Pressure"
+            self.manager.current = "month"
         if(button_name=="Screen"):
-            draw("Screen")
+            MonthWindow.what="Screen"
+            self.manager.current = "month"
         if(button_name=="Water"):
-            draw("Water")
+            MonthWindow.what="Water"
+            self.manager.current = "month"
+
+class MonthWindow(Screen):
+    what= None
+    def on_enter(self):
+        pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    def click(self,button_name):
+        if(button_name=="January"):
+            draw(self.what,button_name)
+        if(button_name=="February"):
+            draw(self.what,button_name)
+        if(button_name=="March"):
+            draw(self.what,button_name)
+        if(button_name=="April"):
+            draw(self.what,button_name)
+        if(button_name=="May"):
+            draw(self.what,button_name)
+        if(button_name=="June"):
+            draw(self.what,button_name)
+        if(button_name=="July"):
+            draw(self.what,button_name)
+        if(button_name=="August"):
+            draw(self.what,button_name)
+        if(button_name=="September"):
+            draw(self.what,button_name)
+        if(button_name=="October"):
+            draw(self.what,button_name)
+        if(button_name=="November"):
+            draw(self.what,button_name)
+        if(button_name=="December"):
+            draw(self.what,button_name)
 
 
 # Load the kv file

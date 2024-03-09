@@ -38,8 +38,8 @@ def plot_lagrange_interpolation(x_values, y_values,constant1,constant2,disp, x_l
         plt.plot(x_value1,y_values_constant1, color='green', linestyle='--')
     plt.plot(x_value2,y_values_constant2, color='orange', linestyle='--')
     if(constant1!=0):
-        plt.text(min(x_values)+4, constant1+1, 'Lower range', horizontalalignment='center',fontsize=12)
-    plt.text(min(x_values)+2, constant2-1, 'Upperrange', horizontalalignment='center',fontsize=12)
+        plt.text(min(x_values)+2, constant1-0.25, 'Lower range', horizontalalignment='center',fontsize=12)
+    plt.text(min(x_values)+8, constant2+0.25, 'Upperrange', horizontalalignment='center',fontsize=12)
     plt.scatter(x_values, y_values, color='red')  # Add points for reference
     plt.title(disp)
     plt.xlabel(x_label)

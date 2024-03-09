@@ -24,6 +24,7 @@ class MyMainApp(MDApp):
         self.data_window = vs.DataWindow(name='data')
         self.blood_window = vs.BloodWindow(name='blood')
         self.graph_window = vs.GraphWindow(name='graph')
+        self.month_window = vs.MonthWindow(name='month')
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Blue"
         wm.add_widget(vs.HomeWindow(name='home'))
@@ -34,6 +35,7 @@ class MyMainApp(MDApp):
         wm.add_widget(self.data_window)
         wm.add_widget(self.blood_window)
         wm.add_widget(self.graph_window)
+        wm.add_widget(self.month_window)
         return wm
 
     def on_start(self):
@@ -54,6 +56,8 @@ class MyMainApp(MDApp):
             self.blood_window.on_enter()
         if self.graph_window:
             self.graph_window.on_enter()
+        if self.month_window:
+            self.month_window.on_enter()
 
 
 if __name__ == "__main__":

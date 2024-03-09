@@ -1,59 +1,73 @@
 import graph as g
 import value as v
 import pressure as p
-def draw(str):
+from datetime import datetime
+from datetime import datetime
+
+def is_single_digit(number):
+    return isinstance(number, int) and 0 <= number <= 9
+
+def draw(new_st,month_name):
+    day_integer = datetime.strptime(month_name, '%B').month
+    if is_single_digit(day_integer):
+        day=str(day_integer)
+        day="0"+day
+    else:
+        day=str(day_integer)
     new= "dependecies\\"
-    if(str=="Platelets"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+    print(day)
+    if(new_st=="Platelets"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,150000,450000,"Platelets", x_label="Day", y_label="Platelets", line_color='red')
-    if(str=="Haemoglobin"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+            g.plot_lagrange_interpolation(x, y,150000,450000,month_name, x_label="Day", y_label="Platelets", line_color='red')
+    if(new_st=="Haemoglobin"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
+        print(x,y)
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,13,17,"Haemoglobin", x_label="Day", y_label="Haemoglobin", line_color='red')
-    if(str=="RBC"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+            g.plot_lagrange_interpolation(x, y,13,17,month_name, x_label="Day", y_label="Haemoglobin", line_color='red')
+    if(new_st=="RBC"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,4.5,5.5, "RBC",x_label="Day", y_label="RBC", line_color='red')
+            g.plot_lagrange_interpolation(x, y,4.5,5.5, month_name,x_label="Day", y_label="RBC", line_color='red')
 
-    if(str=="WBC"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+    if(new_st=="WBC"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,4000,11000,"WBC", x_label="Day", y_label="WBC", line_color='red')
+            g.plot_lagrange_interpolation(x, y,4000,11000,month_name, x_label="Day", y_label="WBC", line_color='red')
     
-    if(str=="Weight"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+    if(new_st=="Weight"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,0,52,"Weight", x_label="Day", y_label="Weight", line_color='red')
+            g.plot_lagrange_interpolation(x, y,0,52,month_name, x_label="Day", y_label="Weight", line_color='red')
 
-    if(str=="Screen"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+    if(new_st=="Screen"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,2,4,"Screen", x_label="Day", y_label="Screen", line_color='red')
+            g.plot_lagrange_interpolation(x, y,2,4,month_name, x_label="Day", y_label="Screen", line_color='red')
 
-    if(str=="Water"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[float(r) for r in month_data.get("03", [])]
+    if(new_st=="Water"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[float(r) for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
-            g.plot_lagrange_interpolation(x, y,2,4,"Water", x_label="Day", y_label="Water", line_color='red')
+            g.plot_lagrange_interpolation(x, y,2,4,month_name, x_label="Day", y_label="Water", line_color='red')
     
-    if(str=="Pressure"):
-        month_days, month_data = v.separate_by_month(v.separeatedata(new+str+".txt"))
-        x=[int(r) for r in month_days.get("03", [])]
-        y=[r for r in month_data.get("03", [])]
+    if(new_st=="Pressure"):
+        month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))
+        x=[int(r) for r in month_days.get(day, [])]
+        y=[r for r in month_data.get(day, [])]
         if(x!=[] and y!=[]):
             print(x,y)
             p.pressure_bar(x,y)
