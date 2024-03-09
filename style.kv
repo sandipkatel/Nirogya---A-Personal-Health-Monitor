@@ -27,7 +27,7 @@
                 size: root.width * 0.25, root.height * 0.25
 
                     
-           MDGridLayout:
+            MDGridLayout:
                 cols: 3
                 spacing: root.width * 0.03
                 padding: root.width * 0.1
@@ -99,28 +99,63 @@
                             halign: "center"
 
                 MDRectangleFlatButton:
-                    text: "Daily Data"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Daily Data"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(12)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "data"
-
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "playlist-edit"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
                 MDRectangleFlatButton:
-                    text: "Blood Data"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Blood Data"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(12)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "blood"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "water"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
 
                 MDRectangleFlatButton:
-                    text: "Graph"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Graph"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(12)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "graph"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "chart-line"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
                     
                 MDRectangleFlatButton:
                     text : "Schedule\nAppointment"
@@ -132,7 +167,7 @@
                     size: root.width * 0.25, root.height * 0.15
                     md_bg_color: 1, 1, 1, 1
                     on_release:
-                        app.root.current = "scheduler"
+                        app.root.current = "doctor"
                     AnchorLayout:
                         anchor_x: "center"
                         MDIcon:
@@ -241,7 +276,7 @@
                         height: self.texture_size[1]
 <SymptomsWindow>:
     name: "symptoms"
-    # id: symptom_window
+
     BackgroundLayout:
         MDTopAppBar:
             id: topappbar
@@ -276,59 +311,145 @@
                     size_hint_y: None
                     height: self.texture_size[1]
         
+<DoctorWindow>
+    name: "doctor"
+    MDScreen:
+        orientation:"vertical"
+        MDTopAppBar:
+            id: topappbar
+            orientation: "vertical"
+            title: "Appointments"
+            pos_hint: {"top" : 1}
+            elevation: 1
+            size_hint: 1, None
+            height: "56dp"
+            left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'home')]]
+        Carousel:
+            pos_hint:{"top": 0.93}
+            MDFloatLayout:
+                orientation: "vertical"
+                MDCard:
+                    elevation:5
+                    radius: [20,20,20,20]
+                    md_bg_color:"blue"
+                    size_hint: .8,.5
+                    pos_hint:{"center_x":.5, "center_y":.5}
+                    MDRectangleFlatButton:
+                        font_size: sp(12)
+                        halign: 'center'
+                        valign: 'center'
+                        size_hint: 1, 1
+                        on_release: root.on_click('kabita')
+                        md_bg_color: 1, 1, 1, 1
+                        AnchorLayout:
+                            anchor_x: "center"
+                            FitImage:
+                                source: "./dependecies/Doctor.png"
+                                size_hint_y: 1
+                                allow_stretch: True
+                                keep_ratio: False
+
+                MDLabel:
+                    text:"Dr. Kabita Pokharel"
+                    font_size: "32sp"
+                    halign: "center"
+                    pos_hint: {"center_x":.5,"center_y":.2}
+                MDLabel:
+                    text:"General Physician"
+                    font_size: "22sp"
+                    halign: "center"
+                    pos_hint: {"center_x":.5,"center_y":.1}
+            MDFloatLayout:
+                MDCard:
+                    elevation:5
+                    md_bg_color:"blue"
+                    size_hint: .9,.5
+                    pos_hint:{"center_x":.5, "center_y":.5}
+                    MDRectangleFlatButton:
+                        halign: 'center'
+                        valign: 'center'
+                        on_release: root.on_click('shekhar')
+                        size_hint: 1, 1
+                        md_bg_color: 1, 1, 1, 1
+                        AnchorLayout:
+                            anchor_x: "center"
+                            FitImage:
+                                source: "./dependecies/Doctor2.png"
+                                halign: "center"
+
+                MDLabel:
+                    text:"Dr.Shekhar Joshi"
+                    font_size: "32sp"
+                    halign: "center"
+                    pos_hint: {"center_x":.5,"center_y":.2}
+                MDLabel:
+                    text:"Dentist"
+                    font_size: "22sp"
+                    halign: "center"
+                    pos_hint: {"center_x":.5,"center_y":.1}
+                        
+
 <SchedulerWindow>:
     name: "scheduler"
-    BackgroundLayout:
-        MDRectangleFlatButton:
-            text: "Back"
-            background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
-            size_hint: None, None
-            size: root.width * 0.1, root.height * 0.05
-            pos_hint: {"x": 0.05, "y": 0.9}
-            on_release: app.root.current = "home"
+    MDScreen:
+        MDTopAppBar:
+            id: topappbar
+            orientation: "vertical"
+            title: "Appointments"
+            pos_hint: {"top" : 1}
+            elevation: 1
+            size_hint: 1, None
+            height: "56dp"
+            left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'doctor')]]
 
         MDBoxLayout:
             orientation: 'vertical'
             spacing: "12dp"
             size_hint_y: None
             height: "200dp"
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            pos_hint: {"center_x": 0.5, "center_y": 0.7}
 
             MDTextField:
                 id: date_input
                 hint_text: "Date"
-                on_focus: root.show_date_picker()
                 size_hint: None, None
-                size: 150, 48  # Adjust the size as needed
+                width: root.width*0.8
+                on_focus: root.show_date_picker()
                 pos_hint: {"center_x": 0.5}
             MDTextField:
                 id: time_input
-                hint_text: "Time(HH:MM)"
-                on_focus: root.show_time_picker()
                 size_hint: None, None
-                size: 150, 48  # Adjust the size as needed
+                width: root.width*0.8
+                on_focus: root.show_time_picker()
+                hint_text: "Time(HH:MM)"
                 pos_hint: {"center_x": 0.5}
             MDTextField:
                 id: name_input
                 hint_text: "Name"
                 size_hint: None, None
-                size: 150, 48  # Adjust the size as needed
+                width: root.width*0.8
                 pos_hint: {"center_x": 0.5}
 
         MDRaisedButton:
             text: "Add Appointment"
             size_hint: None, None
             size: 200, 48
-            pos_hint: {"center_x": 0.5, "center_y": 0.2}
-            on_release: root.show_add_appointment_popup()
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            on_release: root.save_appointment()
 
-        MDLabel:
-            id: appointments_label
-            text: 'Appointments:'
-            color :0,0,1,1
-            size_hint: None, None
-            size: self.texture_size[0], self.texture_size[1]
-            pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        MDBoxLayout:
+            orientation: "vertical"
+            pos_hint: {"center_x": 0.6, "center_y": 0.42}
+            MDLabel:
+                text: "Scheduled Appointments"
+                size_hint_y: None
+                height: self.texture_size[1]
+            MDScrollView:  # Scrollable list of appointments
+                id: appointments_scroll
+                size_hint: (None, None)
+                size: (root.width * 0.8, root.height * 0.5)
+                MDList:
+                    id: container
 
 
 <HospitalWindow>:
