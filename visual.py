@@ -17,7 +17,7 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 #from kivy.uix.textinput import TextInput
 from kivy.metrics import dp
-from kivymd.uix.list import TwoLineListItem
+from kivymd.uix.list import TwoLineListItem, OneLineListItem
 from kivymd.uix.menu import MDDropdownMenu
 from scheduler import AppointmentScheduler
 from datetime import datetime, date
@@ -47,24 +47,69 @@ class HomeWindow(Screen):
 
 
 class PredictorWindow(Screen):
+    selected_symptoms = []
     def predict_disease(self):
         pr = Prediction()
-        selected_symptoms = [field.symptom for field in self.ids.symptom_container.children if field.selected]
-        if selected_symptoms:
-            result = pr.predict_dis(selected_symptoms)
+        #selected_symptoms = [self.ids[symptom + '_label'].text for symptom in MDApp.get_running_app().symptoms_list if
+          #                   self.ids[symptom + '_checkbox'].active]
+        if self.selected_symptoms:
+            result = pr.predict_dis(self.selected_symptoms)
             self.ids.disease_label.text = result
         else:
             self.ids.disease_label.text = "Please select at least one symptom."
 
+        self.selected_symptoms = []
+        self.ids.symptom_list.clear_widgets()
+
     def on_enter(self):
-        symptoms_list = MDApp.get_running_app().symptoms_list
+        self.selected_symptoms = []
+        self.ids.symptom_list.clear_widgets()
+        
+        pass
+        """ symptoms_list = MDApp.get_running_app().symptoms_list
 
         if symptoms_list:
             self.ids.symptom_container.clear_widgets()
 
             for symptom in symptoms_list:
-                symptom_field = SymptomOptionField(symptom)
-                self.ids.symptom_container.add_widget(symptom_field)
+                symptom_layout = BoxLayout(
+                    orientation='horizontal', size_hint_y=None, height=dp(20))
+
+                label = Label(text=symptom, size_hint_x=0.8)
+                checkbox = CheckBox()
+
+                self.ids[symptom + '_label'] = label
+                self.ids[symptom + '_checkbox'] = checkbox
+                symptom_layout.add_widget(label)
+                symptom_layout.add_widget(checkbox)
+
+                self.ids.symptom_container.add_widget(symptom_layout)
+        else:
+            print("Symptoms list is empty or None") """
+
+    def show_add_symptom_dropdown(self):
+        if hasattr(self, 'dropdown_menu') and isinstance(self.dropdown_menu, MDDropdownMenu):
+            self.dropdown_menu.dismiss()
+        searchText = self.ids.diseaseTextField.text
+        symptoms_list = MDApp.get_running_app().symptoms_list
+        search_items = [
+    {
+        "text": symptom,
+        "on_release": lambda symptom=symptom: self.addSymptom(symptom),
+    }for symptom in symptoms_list if searchText.lower() in symptom.lower()
+        ]
+        self.dropdown_menu = MDDropdownMenu(
+            caller=self.ids.diseaseTextField, items=search_items
+        )
+        self.dropdown_menu.open()
+
+    def addSymptom(self, symptom):
+        self.selected_symptoms.append(symptom)
+        symptomText = str(len(self.selected_symptoms)) + ". " + symptom
+        list_item = OneLineListItem(text=symptomText)
+        self.ids.symptom_list.add_widget(list_item)
+        self.ids.diseaseTextField.text = ""
+        self.dropdown_menu.dismiss()
 
 class SymptomOptionField(ButtonBehavior, BoxLayout):
     selected = BooleanProperty(False)
@@ -95,7 +140,6 @@ class SymptomOptionField(ButtonBehavior, BoxLayout):
 
 class SymptomsWindow(Screen):
     disease_label = None
-
     def find_info(self, disease):
         dtl = Detail()
         self.ids.all_info.clear_widgets()
@@ -201,20 +245,18 @@ class SchedulerWindow(Screen):
 class HospitalWindow(Screen):
     dropdown_menus = {}
     def on_enter(self):
-        init =0.6
         self.ids.hospitalList.clear_widgets()
         nameList = self.readData("dataset\hospitals.csv")
-        for name, address, coordinates in zip(nameList[0], nameList[1], nameList[3]):
+        for name, address in zip(nameList[0], nameList[1]):
             
             item = TwoLineListItem(
             text=name,
             secondary_text = address
                             )
-            button = MDFlatButton(text = "view in map", pos_hint = {"top": init, 'x': 0.93},
+            button = MDFlatButton(text = "[color=#0000ff]view in map[/color]", pos_hint = {"top": 0.6, 'x': 0.95},
                                    on_release= partial(self.view_in_map, name))
             item.add_widget(button)
             self.ids.hospitalList.add_widget(item)
-            init+=0.04
     
             
     
@@ -254,12 +296,15 @@ class HospitalWindow(Screen):
         
         nameList = self.readData("dataset\hospitalstd.csv")
         for name, address in zip(nameList[0], nameList[1]):
-            self.ids.hospitalList.add_widget(
-            TwoLineListItem(
+            
+            item = TwoLineListItem(
             text=name,
             secondary_text = address
                             )
-                            )
+            button = MDFlatButton(text = "[color=#0000ff]view in map[/color]", pos_hint = {"top": 0.6, 'x': 0.95},
+                                   on_release= partial(self.view_in_map, name))
+            item.add_widget(button)
+            self.ids.hospitalList.add_widget(item)
         
     
     def sort_by_distance(self):
@@ -286,12 +331,15 @@ class HospitalWindow(Screen):
         
         nameList = self.readData("dataset\hospitalstd.csv")
         for name, address in zip(nameList[0], nameList[1]):
-            self.ids.hospitalList.add_widget(
-            TwoLineListItem(
+            
+            item = TwoLineListItem(
             text=name,
             secondary_text = address
                             )
-                            )
+            button = MDFlatButton(text = "[color=#0000ff]view in map[/color]", pos_hint = {"top": 0.6, 'x': 0.95},
+                                   on_release= partial(self.view_in_map, name))
+            item.add_widget(button)
+            self.ids.hospitalList.add_widget(item)
         
         
 
@@ -302,13 +350,15 @@ class HospitalWindow(Screen):
         for name, address in zip(nameList[0], nameList[1]):
             searchWhat = name if searchIndex == 0 else address
             if searchText.lower() in searchWhat.lower():
-                self.ids.hospitalList.add_widget(
-                TwoLineListItem(
+                item = TwoLineListItem(
                 text=name,
                 secondary_text = address
                                 )
-                                )
-                
+                button = MDFlatButton(text = "[color=#0000ff]view in map[/color]",  pos_hint = {"top": 0.6, 'x': 0.95},
+                                    on_release= partial(self.view_in_map, name))
+                item.add_widget(button)
+                self.ids.hospitalList.add_widget(item)
+    
     def toggleSearch(self):
 
         if self.ids.search_hospital.hint_text == "Search by Address":
@@ -369,6 +419,14 @@ class HospitalWindow(Screen):
             writer = csv.DictWriter(file, fieldnames=data[0].keys())
             writer.writeheader()
             writer.writerows(data)
+
+
+class ContentDialog(Popup):
+    def __init__(self, title='', content_cls=None, buttons=[], **kwargs):
+        super(ContentDialog, self).__init__(**kwargs)
+        self.title = title
+        self.content_cls = content_cls
+        self.buttons = buttons
 
 
 class ContentDialog(Popup):

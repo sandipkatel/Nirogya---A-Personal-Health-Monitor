@@ -5,7 +5,7 @@
         size_hint: 10, 10
         canvas.before:
             Color:
-                rgba: 0.3, 0.3, 0.3, 1  # Light gray background
+                rgba: 1,1,1, 1  # Light gray background
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -15,40 +15,88 @@
     Screen:
         BackgroundLayout:
             orientation: "vertical"
+            FitImage:
+                source:'./dependecies/background.jpg'
+                size: root.width, root.height 
+                pos: self.pos
+
             AsyncImage:
-                source: './dependecies/Logo.png'
+                source: './dependecies/Transparent_Logo.png'
                 size_hint: (None, None)
-                pos_hint: {"center_x": 0.1, "center_y": 0.9}
-                size: root.width * 0.2, root.height * 0.2
+                pos_hint: {"center_x": 0.5, "center_y": 0.9}
+                size: root.width * 0.25, root.height * 0.25
+
                     
-            MDGridLayout:
-                cols: 1
-                spacing: root.width * 0.01
-                padding: root.width * 0.01
+           MDGridLayout:
+                cols: 3
+                spacing: root.width * 0.03
+                padding: root.width * 0.1
                 size_hint: None, None
-                size_hint_min_y: root.height * 0.5
-                pos_hint: {"center_x": 0.5, "center_y": 0.7}
-                MDRectangleFlatButton:
-                    text: "Daily Health Matrices"
-                    background_color: 0, 0, 1, 1  # Blue button
-                    size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
-                    pos_hint: {"center_x": 0.5}
+                pos_hint: {"top":0.75}
 
                 MDRectangleFlatButton:
-                    text: "Predictor"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text: "Daily Matrices"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(12)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "chart-line"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+                            
+                            
+                    
+                    #md_bg_color: "white"
+                    
+                    #pos_hint: {"center_x": 0.5}
+
+                MDRectangleFlatButton:
+                    text : "Disease Predictor"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(11)  
+                    halign: 'center'
+                    valign: 'bottom'
+                    size_hint: None, None
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "predictor"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "virus"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+
                 MDRectangleFlatButton:
-                    text: "Symptoms"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Symptoms"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(12)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "symptoms"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "emoticon-sick-outline"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
 
                 MDRectangleFlatButton:
                     text: "Daily Data"
@@ -75,60 +123,110 @@
                         app.root.current = "graph"
                     
                 MDRectangleFlatButton:
-                    text: "Scheduler"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Schedule\nAppointment"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(11)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "scheduler"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "calendar-week"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+
                 MDRectangleFlatButton:
-                    text: "Remider"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Medication\nReminder"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(11)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
+                    
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "clock-alert-outline"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+
                 MDRectangleFlatButton:
-                    text: "Hospitals Nearby"
-                    background_color: 0, 0, 1, 1  # Blue button
+                    text : "Hospitals\nNearby"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(11)  
+                    halign: 'center'
+                    valign: 'bottom'
                     size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
                     on_release:
                         app.root.current = "hospital"
-                MDRectangleFlatButton:
-                    text: "SOS"
-                    background_color: 1, 0, 0, 1  # Cyan button
-                    size_hint: None, None
-                    size: root.width * 0.4, root.height * 0.1
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "hospital-box-outline"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+
+                
 
 <PredictorWindow>:
     name: "predictor"
     Screen:
         BackgroundLayout:
-            MDRectangleFlatButton:
-                text: "Back"
-                background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
-                size_hint: None, None
-                size: root.width * 0.1, root.height * 0.05
-                pos_hint: {"x": 0.05, "y": 0.9}
-                on_release: app.root.current = "home"
+            id: PredictorScreen
+            MDTopAppBar:
+                id: topappbar
+                orientation: "vertical"
+                title: "Disease Predictor"
+                pos_hint: {"top" : 1}
+                elevation: 1
+                size_hint: 1, None
+                height: "56dp"  
+                left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'home')]]
+            
             MDBoxLayout:
                 orientation: "vertical"
                 pos_hint: {"center_x": 0.5, "y": 0.5}
-                ScrollView:
-                    id: symptom_scroll
+                MDLabel:
+                    text: "Added Symptom:"
+                    pos_hint: {"center_x": 0.5, "y": 0.5}
+                MDList:
+                    id: symptom_list
                     size_hint: (1, None)
                     size: (root.width * 0.5, root.height * 0.4)
-                    MDGridLayout:   
-                        id: symptom_container
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
-            MDRectangleFlatButton:
-                text: "Predict"
-                background_color: 1, 0, 0, 1  # Red button
-                on_press: root.predict_disease()
-                size_hint: None, None
-                size: root.width * 0.2, root.height * 0.05
-                pos_hint: {"x": 0.05, "y": 0.4}
+            BoxLayout:
+                spacing: "12dp"  
+                padding: "12dp"     
+                MDTextField:
+                    id: diseaseTextField
+                    hint_text: "Add Symptom"
+                    pos_hint: {"center_x": 0.75, "center_y":0.8}
+                    size_hint: None, None
+                    width: "240dp"
+                    on_text: root.show_add_symptom_dropdown()
+                    
+
+                MDRectangleFlatButton:
+                    text: "Predict"
+                    background_color: 1, 0, 0, 1  # Red button
+                    on_press: root.predict_disease()
+                    size_hint: None, None
+                    size: root.width * 0.2, root.height * 0.05
+                    pos_hint: {"center_x": 0.5, "center_y": 0.8}
             MDBoxLayout:
                 orientation: "vertical"
                 pos_hint: {"center_x": 0.6, "y": 0.05}
@@ -141,18 +239,20 @@
                         text: ""
                         size_hint_y: None
                         height: self.texture_size[1]
-
 <SymptomsWindow>:
     name: "symptoms"
     # id: symptom_window
     BackgroundLayout:
-        MDRectangleFlatButton:
-            text: "Back"
-            background_color: 0.2, 0.2, 0.2, 1  # Dark gray button
-            size_hint: None, None
-            size: root.width * 0.1, root.height * 0.05
-            pos_hint: {"x": 0.05, "y": 0.9}
-            on_release: app.root.current = "home"
+        MDTopAppBar:
+            id: topappbar
+            orientation: "vertical"
+            title: "Disease Predictor"
+            pos_hint: {"top" : 1}
+            elevation: 1
+            size_hint: 1, None
+            height: "56dp"  
+            left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'home')]]
+        
         MDTextField:
             id: disease
             hint_text: "Enter a Disease"
