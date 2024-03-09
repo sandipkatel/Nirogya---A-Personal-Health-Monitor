@@ -15,6 +15,7 @@ class MyMainApp(MDApp):
     doctor_window = None
     hospital_window = None
     symptoms_window = None
+    about_window = None
 
     def build(self):
         wm = vs.WindowManager()
@@ -27,6 +28,7 @@ class MyMainApp(MDApp):
         self.blood_window = vs.BloodWindow(name='blood')
         self.graph_window = vs.GraphWindow(name='graph')
         self.month_window = vs.MonthWindow(name='month')
+        self.about_window = vs.AboutWindow(name = 'about')
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Blue"
         wm.add_widget(vs.HomeWindow(name='home'))
@@ -39,6 +41,7 @@ class MyMainApp(MDApp):
         wm.add_widget(self.blood_window)
         wm.add_widget(self.graph_window)
         wm.add_widget(self.month_window)
+        wm.add_widget(self.about_window)
         return wm
 
     def on_start(self):

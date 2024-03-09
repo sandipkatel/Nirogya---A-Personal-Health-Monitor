@@ -98,6 +98,8 @@ class PredictorWindow(Screen):
             self.dropdown_open = True
         if hasattr(self, 'dropdown_menu') and isinstance(self.dropdown_menu, MDDropdownMenu):
             self.dropdown_menu.dismiss()
+        if self.ids.diseaseTextField.on_focus == False:
+            self.dropdown_menu.dismiss()
         searchText = self.ids.diseaseTextField.text
         symptoms_list = MDApp.get_running_app().symptoms_list
         search_items = [
@@ -683,6 +685,25 @@ class MonthWindow(Screen):
             draw(self.what,button_name)
         if(button_name=="December"):
             draw(self.what,button_name)
+
+class AboutWindow(Screen):
+    def on_start(self):
+        pass
+
+    def openGithub(self,index):
+        if index == 1:
+            url = f"https://github.com/sandipkatel"
+            webbrowser.open(url)
+        if index ==2 :
+            url = f"https://github.com/saphalr"
+            webbrowser.open(url)
+        if index == 3:
+            url = f"https://github.com/sharadpokharel108"
+            webbrowser.open(url)
+        if index == 4:
+            url = f"https://github.com/SijanJ"
+            webbrowser.open(url)
+
 
 
 # Load the kv file

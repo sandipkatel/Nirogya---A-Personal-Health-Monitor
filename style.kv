@@ -35,30 +35,6 @@
                 pos_hint: {"top":0.75}
 
                 MDRectangleFlatButton:
-                    text: "Daily Matrices"
-                    text_color: 140/255,190/255,214/255,1
-                    font_size: sp(12)  
-                    halign: 'center'
-                    valign: 'bottom'
-                    size_hint: None, None
-                    size: root.width * 0.25, root.height * 0.15
-                    md_bg_color: 1, 1, 1, 1
-                    AnchorLayout:
-                        anchor_x: "center"
-                        MDIcon:
-                            icon: "chart-line"
-                            theme_text_color: "Custom"
-                            text_color: 140/255,190/255,214/255, 1
-                            font_size: 48
-                            halign: "center"
-                            
-                            
-                    
-                    #md_bg_color: "white"
-                    
-                    #pos_hint: {"center_x": 0.5}
-
-                MDRectangleFlatButton:
                     text : "Disease Predictor"
                     text_color: 140/255,190/255,214/255,1
                     font_size: sp(11)  
@@ -97,6 +73,65 @@
                             text_color: 140/255,190/255,214/255, 1
                             font_size: 48
                             halign: "center"
+
+                MDRectangleFlatButton:
+                    text : "Schedule\nAppointment"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(11)  
+                    halign: 'center'
+                    valign: 'bottom'
+                    size_hint: None, None
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
+                    on_release:
+                        app.root.current = "doctor"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "calendar-week"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+
+                MDRectangleFlatButton:
+                    text : "Hospitals\nNearby"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(11)  
+                    halign: 'center'
+                    valign: 'bottom'
+                    size_hint: None, None
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
+                    on_release:
+                        app.root.current = "hospital"
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "hospital-box-outline"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+
+                MDRectangleFlatButton:
+                    text: "Daily Matrices"
+                    text_color: 140/255,190/255,214/255,1
+                    font_size: sp(12)  
+                    halign: 'center'
+                    valign: 'bottom'
+                    size_hint: None, None
+                    size: root.width * 0.25, root.height * 0.15
+                    md_bg_color: 1, 1, 1, 1
+                    AnchorLayout:
+                        anchor_x: "center"
+                        MDIcon:
+                            icon: "chart-line"
+                            theme_text_color: "Custom"
+                            text_color: 140/255,190/255,214/255, 1
+                            font_size: 48
+                            halign: "center"
+                            
 
                 MDRectangleFlatButton:
                     text : "Daily Data"
@@ -157,8 +192,10 @@
                             font_size: 48
                             halign: "center"
                     
+                
+
                 MDRectangleFlatButton:
-                    text : "Schedule\nAppointment"
+                    text : "About"
                     text_color: 140/255,190/255,214/255,1
                     font_size: sp(11)  
                     halign: 'center'
@@ -167,54 +204,18 @@
                     size: root.width * 0.25, root.height * 0.15
                     md_bg_color: 1, 1, 1, 1
                     on_release:
-                        app.root.current = "doctor"
-                    AnchorLayout:
-                        anchor_x: "center"
-                        MDIcon:
-                            icon: "calendar-week"
-                            theme_text_color: "Custom"
-                            text_color: 140/255,190/255,214/255, 1
-                            font_size: 48
-                            halign: "center"
-
-                MDRectangleFlatButton:
-                    text : "Medication\nReminder"
-                    text_color: 140/255,190/255,214/255,1
-                    font_size: sp(11)  
-                    halign: 'center'
-                    valign: 'bottom'
-                    size_hint: None, None
-                    size: root.width * 0.25, root.height * 0.15
-                    md_bg_color: 1, 1, 1, 1
+                        app.root.current = "about"
                     
                     AnchorLayout:
                         anchor_x: "center"
                         MDIcon:
-                            icon: "clock-alert-outline"
+                            icon: "information-outline"
                             theme_text_color: "Custom"
                             text_color: 140/255,190/255,214/255, 1
                             font_size: 48
                             halign: "center"
 
-                MDRectangleFlatButton:
-                    text : "Hospitals\nNearby"
-                    text_color: 140/255,190/255,214/255,1
-                    font_size: sp(11)  
-                    halign: 'center'
-                    valign: 'bottom'
-                    size_hint: None, None
-                    size: root.width * 0.25, root.height * 0.15
-                    md_bg_color: 1, 1, 1, 1
-                    on_release:
-                        app.root.current = "hospital"
-                    AnchorLayout:
-                        anchor_x: "center"
-                        MDIcon:
-                            icon: "hospital-box-outline"
-                            theme_text_color: "Custom"
-                            text_color: 140/255,190/255,214/255, 1
-                            font_size: 48
-                            halign: "center"
+                
 
 <BMIWindow>
     name: "bmi"
@@ -254,7 +255,7 @@
                     pos_hint: {"center_x": 0.75, "center_y":0.8}
                     size_hint: None, None
                     width: "240dp"
-                    on_focus : root.show_add_symptom_dropdown()
+                    on_text : root.show_add_symptom_dropdown()
                     
                 MDRectangleFlatButton:
                     text: "Predict"
@@ -840,6 +841,79 @@
             size: (150, 60)
             pos_hint: {'center_x': 0.8, 'center_y':0.5}
             on_release: root.click("December")
+
+<AboutWindow>
+    name: "about"
+    canvas.before:  
+        Color:
+            rgba: (237/255, 231/255, 225/255,1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Screen:
+        BoxLayout:
+            md_bg_color: 1,1,0,1
+            orientation: "vertical"
+            spacing: "40dp"
+            MDTopAppBar:
+                id: topappbar
+                orientation: "vertical"
+                title: "About"
+                pos_hint: {"top" : 1}
+                elevation: 1
+                size_hint: 1, None
+                height: "56dp"
+                left_action_items:[["arrow-left", lambda x: setattr(app.root, 'current', 'home')]]
+            
+            BoxLayout: 
+                orientation: "vertical" 
+                outline_width: 0.5
+                outline_colour: (0, 0, 0, 1)
+                MDCard:
+                    orientation: "vertical"
+                    size_hint: None, None
+                    size:(300, 600)
+                    pos_hint: {"center_x": .5, "top": .1, "bottom": 0.5}
+                    padding:10
+                    spacing:20
+                    halign: "center"
+                    valign: "center"
+                    MDLabel:
+                        #spacing: "12dp"
+                        #padding: "12dp"
+                        text: "The Nirogya(A personal health monitor) is a small project developed using Python with the Kivy framework, aimed at revolutionizing personal health management."
+                        halign: "center"
+                        outline_width: 1
+                        outline_colour: (0, 0, 0, 1)
+                    MDFlatButton:
+                        text: "Developers:"
+                        text_size: "5dp"
+                        height: 0.001
+                        size_hint: .75, .005
+                        pos_hint:{"center_x":0.5, "center_y":0.8}
+                        valign: "center"
+                        halign: "center"
+                    MDFlatButton:
+                        text : "[color=#0000ff]Sandip Katel[/color]"
+                        pos_hint : {"center_x": 0.5, 'center_y': 0.5}
+                        on_release: root.openGithub(1)
+                    MDFlatButton:
+                        text : "[color=#0000ff]Saphal Rimal[/color]"
+                        pos_hint : {"center_x": 0.5, 'center_y': 0.5}
+                        on_release: root.openGithub(2)
+                    MDFlatButton:
+                        text : "[color=#0000ff]Sharad Pokharel[/color]"
+                        pos_hint : {"center_x": 0.5, 'center_y': 0.5}
+                        on_release: root.openGithub(1)
+                    MDFlatButton:
+                        text : "[color=#0000ff]Sijan Joshi[/color]"
+                        pos_hint : {"center_x": 0.5, 'center_y': 0.5}
+                        on_release: root.openGithub(1)
+
+                
+
+                
+
 
 
 
