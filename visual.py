@@ -1,9 +1,11 @@
 from kivymd.app import MDApp
 from kivymd.uix.pickers import MDDatePicker, MDTimePicker
 from kivy.lang import Builder
+import json
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.checkbox import CheckBox
+from kivymd.uix.button import MDIconButton
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.label import MDLabel
 from kivy.properties import BooleanProperty, StringProperty
@@ -15,6 +17,7 @@ from kivymd.uix.dialog import MDDialog
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
+from kivymd.uix.list import TwoLineListItem
 #from kivy.uix.textinput import TextInput
 from kivy.metrics import dp
 from kivymd.uix.list import TwoLineListItem, OneLineListItem
@@ -26,6 +29,9 @@ from functools import partial
 import ast,webbrowser,csv, requests
 import pandas as pd
 from datetime import datetime
+from kivymd.uix.card import (
+    MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
+)
 import subprocess
 from kivymd.uix.datatables import MDDataTable
 import file as fi
@@ -160,38 +166,137 @@ class Content(BoxLayout):
 
 
 class SchedulerWindow(Screen):
+    schedulers = {'kabita': AppointmentScheduler(), 'shekhar': AppointmentScheduler()}
+    doctor = StringProperty(None)
     scheduler = AppointmentScheduler()
 
+    def __init__(self, **kwargs):
+        super(SchedulerWindow, self).__init__(**kwargs)
+        if self.doctor=="kabita":
+            self.scheduler = self.doc1_scheduler
+        if self.doctor=="shekhar":
+            self.scheduler = self.doc2_scheduler
+        self.load_appointments_from_file()
+        self.update_appointments_label()
+    
+    def on_doctor(self, instance, value):
+        if value in self.schedulers:
+            self.scheduler = self.schedulers[value]
+            self.scheduler.appointments.traverse()
+            self.load_appointments_from_file()
+            self.update_appointments_label()
+    
+    def scheduled(self,time, name):
+        temp_node = self.scheduler.appointments.front
+        while temp_node:
+            if temp_node.data[0] == time and temp_node.data[1] == name:
+                return True
+            temp_node = temp_node.next
+        return False
     def save_appointment(self):
         date_str = self.ids.date_input.text
         time_str = self.ids.time_input.text
         name = self.ids.name_input.text
+        
         try:
-            appointment_time = datetime.strptime(
-                date_str + ' ' + time_str, '%Y-%m-%d %H:%M')
-            self.scheduler.schedule_appointment(appointment_time, name)
-            self.update_appointments_label()
+            appointment_time = datetime.strptime(date_str + ' ' + time_str, '%Y-%m-%d %H:%M')
+            if not self.scheduled(appointment_time, name):
+                self.scheduler.schedule_appointment(appointment_time, name)
+                self.scheduler.appointments.traverse()
+                self.update_appointments_label()
+                self.save_appointments_to_file()
+            else:
+                self.show_error_popup('Appointment already scheduled')
         except ValueError:
             self.show_error_popup('Invalid Date/Time Format')
-
+        
+            
+    def save_appointments_to_file(self):
+        filename = f"{self.doctor}_appointments.json"
+        appointments = self.scheduler.appointments
+        data = []
+        temp_node = appointments.front
+        while temp_node:
+            data.append({str(temp_node.data[1]): str(temp_node.data[0])})
+            temp_node = temp_node.next
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)
+    
+    def delete_appointment_from_file(self, time, name):
+        filename = f"{self.doctor}_appointments.json"
+        try:
+            with open(filename, "r") as file:
+                data = json.load(file)
+            print(time, name)
+            self.scheduler.appointments.traverse()
+            # new_data = [appointment for appointment in data if not (name in appointment and str(time) == appointment[name])]
+            for appointment in data:
+                if (name in appointment and str(time) == appointment[name]):
+                    data.remove(appointment)
+            
+            with open(filename, "w") as file:
+                json.dump(data, file, indent=4) 
+                
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass
+    
+    def load_appointments_from_file(self):
+        filename = f"{self.doctor}_appointments.json"
+        try:
+            with open(filename, "r") as file:
+                data = json.load(file)
+                self.scheduler.appointments.clear()
+                for appointment in data:
+                    name = list(appointment.keys())[0]
+                    time_str = appointment[name]
+                    
+                    appointment_time = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
+                    self.scheduler.schedule_appointment(appointment_time, name)
+                    
+        except (FileNotFoundError, json.JSONDecodeError):
+            pass 
+      
     def update_appointments_label(self):
-        appointments = self.scheduler.appointments.queue
-        appointment_texts = [
-            f'{app[1][0]} - {app[1][1]}' for app in appointments]
-        if appointment_texts:
-            appointments_text = '\n'.join(appointment_texts)
-        else:
-            appointments_text = "No appointments scheduled."
-        self.ids.appointments_label.text = f'Appointments:\n{appointments_text}'
+        appointments = self.scheduler.appointments
+        self.ids.container.clear_widgets()
+        if not appointments.isEmpty():
+            self.ids.container.clear_widgets()
+            temp_node = appointments.front
+            while temp_node:
+                appointment_layout = BoxLayout(orientation='horizontal', size_hint=(1, None))
+                appointment_time = temp_node.data[0]
+                appointment_name = temp_node.data[1]
+                appointment_layout.add_widget(MDCardSwipe(
+                    MDCardSwipeLayerBox(
+                            MDIconButton(
+                                icon="trash-can", 
+                                pos_hint={"center_y":0.5},
+                                on_release=lambda x, widget=appointment_layout, time=appointment_time, name=appointment_name: self.delete_appointment(widget, time, name) 
+                                )
+                            ,
+                            radius = [20, 20, 20, 20],
+                            padding = dp(20),
+                            md_bg_color=(0, 0, 0, 1)
+                        ),
+                        MDCardSwipeFrontBox(
+                            TwoLineListItem(
+                                text=f'{temp_node.data[1]}',
+                                secondary_text=f'{temp_node.data[0]}'
+                            ),
+                            radius = [20, 20, 20, 20],
+                            line_color=(0, 0, 1, 0.2),
+                        )
+                    )
+                )
+                self.ids.container.add_widget(appointment_layout)
+                temp_node = temp_node.next
 
-    # def show_add_appointment_popup(self):
-    #     self.dialog = MDDialog(
-    #     title="Add Appointment:",
-    #     type="custom",
-    #     content_cls=Content(),
-
-    #     )
-    #     self.dialog.open()
+    def delete_appointment(self,widget, time, name):
+        self.delete_appointment_from_file(time, name)
+        self.ids.container.remove_widget(widget)
+        self.scheduler.cancel_appointment(time, name)
+        
+               
 
     def show_error_popup(self, message):
         content = Label(text=message)
@@ -216,18 +321,12 @@ class SchedulerWindow(Screen):
     def show_date_picker(self):
         if not hasattr(self, 'date_picker_open') or not self.date_picker_open:
             self.date_picker_open = True
-            screen_width, screen_height = Window.size
-            picker_width = screen_width * 0.8  # Adjust as needed
-            picker_height = screen_height * 0.6  # Adjust as needed
             date_dialog = MDDatePicker(min_date=date.today(), max_date=date(
                 date.today().year,
                 date.today().month+6,
                 date.today().day,
             ),
             )
-            date_dialog.size_hint_max = (picker_width, picker_height)
-            date_dialog.size_hint_min = (picker_width, picker_height)
-            # date_dialog = MDDatePicker()
             date_dialog.bind(on_save=self.on_save_date,
                              on_cancel=self.on_cancel_date)
             date_dialog.open()
@@ -240,7 +339,12 @@ class SchedulerWindow(Screen):
             time_dialog.bind(on_save=self.on_save_time,
                              on_cancel=self.on_cancel_time)
             time_dialog.open()
+
         
+class DoctorWindow(Screen):
+    def on_click(self, doctor):
+        self.manager.get_screen('scheduler').doctor = doctor
+        self.manager.current = 'scheduler'
 
 class HospitalWindow(Screen):
     dropdown_menus = {}
