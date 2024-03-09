@@ -1,8 +1,8 @@
-Name,Address,Contact,Coordinates,distance
-Civil Service Hospital,"Minbhawan Marg, Kathmandu",01-4107000,"(27.686410, 85.338838)",0.013050423134899174
-Norvic International Hospital,"Thapathali, Lalitpur",01-4256656 / 01-4256568,"(27.689940, 85.319266)",0.014586046619973167
-Kathmandu ENT Hospital,"Adwait Marg, purano buspark bagbazar, Kathmandu",01-5345554,"(27.703704, 85.318277)",0.014920185823245431
-Bir Hospital,"Kanti Path, Kathmandu",01-4221988/ 01-4221119,"(27.704803, 85.313655)",0.01959707718003245
-Patan Hospital,"Lagankhel, Lalitpur",01-5522278,"(27.668287, 85.320594)",0.03119521125108729
-B&B HOSPITAL,"Gwarko, Lalitpur",01-5970032,"(27.664885, 85.329284)",0.0326121983466275
-HAMS Hospital,"Mandikhatar Road, Kathmandu","01-4377404, 01-4377704","(27.733349, 85.346344)",0.038779614967147144
+Name,Address,Contact,Coordinates
+B&B HOSPITAL,"Gwarko, Lalitpur",01-5970032,"(27.664885, 85.329284)"
+Bir Hospital,"Kanti Path, Kathmandu",01-4221988/ 01-4221119,"(27.704803, 85.313655)"
+Civil Service Hospital,"Minbhawan Marg, Kathmandu",01-4107000,"(27.686410, 85.338838)"
+HAMS Hospital,"Mandikhatar Road, Kathmandu","01-4377404, 01-4377704","(27.733349, 85.346344)"
+Kathmandu ENT Hospital,"Adwait Marg, purano buspark bagbazar, Kathmandu",01-5345554,"(27.703704, 85.318277)"
+Norvic International Hospital,"Thapathali, Lalitpur",01-4256656 / 01-4256568,"(27.689940, 85.319266)"
+Patan Hospital,"Lagankhel, Lalitpur",01-5522278,"(27.668287, 85.320594)"

@@ -94,6 +94,8 @@ class PredictorWindow(Screen):
             print("Symptoms list is empty or None") """
 
     def show_add_symptom_dropdown(self):
+        if not hasattr(self, 'dropdown_open') or not self.dropdown_open:
+            self.dropdown_open = True
         if hasattr(self, 'dropdown_menu') and isinstance(self.dropdown_menu, MDDropdownMenu):
             self.dropdown_menu.dismiss()
         searchText = self.ids.diseaseTextField.text
@@ -212,7 +214,7 @@ class SchedulerWindow(Screen):
         
             
     def save_appointments_to_file(self):
-        filename = f"{self.doctor}_appointments.json"
+        filename = f"./dependecies/{self.doctor}_appointments.json"
         appointments = self.scheduler.appointments
         data = []
         temp_node = appointments.front
@@ -223,7 +225,7 @@ class SchedulerWindow(Screen):
             json.dump(data, file, indent=4)
     
     def delete_appointment_from_file(self, time, name):
-        filename = f"{self.doctor}_appointments.json"
+        filename = f"./dependecies/{self.doctor}_appointments.json"
         try:
             with open(filename, "r") as file:
                 data = json.load(file)
@@ -241,7 +243,7 @@ class SchedulerWindow(Screen):
             pass
     
     def load_appointments_from_file(self):
-        filename = f"{self.doctor}_appointments.json"
+        filename = f"./dependecies/{self.doctor}_appointments.json"
         try:
             with open(filename, "r") as file:
                 data = json.load(file)

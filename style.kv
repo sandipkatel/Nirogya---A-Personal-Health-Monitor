@@ -216,8 +216,10 @@
                             font_size: 48
                             halign: "center"
 
-                
-
+<BMIWindow>
+    name: "bmi"
+    Screen:
+        
 <PredictorWindow>:
     name: "predictor"
     Screen:
@@ -252,9 +254,8 @@
                     pos_hint: {"center_x": 0.75, "center_y":0.8}
                     size_hint: None, None
                     width: "240dp"
-                    on_text: root.show_add_symptom_dropdown()
+                    on_focus : root.show_add_symptom_dropdown()
                     
-
                 MDRectangleFlatButton:
                     text: "Predict"
                     background_color: 1, 0, 0, 1  # Red button
