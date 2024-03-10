@@ -68,8 +68,6 @@ class BMIWindow(Screen):
             ],
             width_mult=4,
         )
-
-    def on_enter(self):
         self.data_tables = MDDataTable(
             size_hint=(0.7, 0.4),
             use_pagination=False,
@@ -84,7 +82,12 @@ class BMIWindow(Screen):
                 ("≥ 30", "Obesity"),
             ]
         )
+
         self.ids.layout.add_widget(self.data_tables)
+
+    def on_enter(self):
+        # self.data_tables.clear_widgets()
+        pass
         # Set initial selected row index (assuming first row is default)
 
     def set_units(self, unit):
@@ -463,12 +466,12 @@ class HospitalWindow(Screen):
         
     
     def sort_by_distance(self):
-        add = requests.get("https://api.ipify.org").text 
-        url = "https://get.geojs.io/v1/ip/geo/" + add + ".json"
-        geo_request = requests.get(url)
-        geo_data = geo_request.json()
-        g=[float(geo_data['latitude']), float(geo_data['longitude'])]
-        #g=[27.664077, 85.341975] 
+        # add = requests.get("https://api.ipify.org").text 
+        # url = "https://get.geojs.io/v1/ip/geo/" + add + ".json"
+        # geo_request = requests.get(url)
+        # geo_data = geo_request.json()
+        # g=[float(geo_data['latitude']), float(geo_data['longitude'])]
+        g=[27.681908, 85.319193] 
         df = pd.read_csv("dataset/hospitals_data/hospitals.csv", encoding="ISO-8859-1")
         nameList = self.readData("dataset/hospitals_data/hospitals.csv")
         distanceList = []
