@@ -20,6 +20,7 @@ from kivymd.uix.list import TwoLineListItem
 from kivy.metrics import dp
 from kivymd.uix.list import TwoLineListItem, OneLineListItem
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.properties import ObjectProperty, NumericProperty
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.card import (
@@ -49,6 +50,78 @@ class BackgroundLayout(FloatLayout):
 class HomeWindow(Screen):
     pass
 
+class BMIWindow(Screen):
+    drop_down_menu = ObjectProperty(None)
+    bmi_weight = ObjectProperty(None)
+    bmi_height = ObjectProperty(None)
+    bmi_label = ObjectProperty(None)
+    data_tables = ObjectProperty(None)
+    selected_row_index = NumericProperty(None)  # To store the highlighted row index
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.menu = MDDropdownMenu(
+            caller=self.ids.drop_down_menu,
+            items=[
+                {"text": "Metric", "viewclass": "OneLineListItem", "on_release": lambda x="Metric": self.set_units(x)},
+                {"text": "Imperial", "viewclass": "OneLineListItem", "on_release": lambda x="Imperial": self.set_units(x)}
+            ],
+            width_mult=4,
+        )
+
+    def on_enter(self):
+        self.data_tables = MDDataTable(
+            size_hint=(0.7, 0.4),
+            use_pagination=False,
+            column_data=[
+                ("BMI", dp(30)),
+                ("Status", dp(30)),
+            ],
+            row_data=[
+                ("≤ 18.4", "Underweight"),
+                ("18.5 - 24.9", "Normal Weight"),
+                ("25 - 29.9", "Overweight"),
+                ("≥ 30", "Obesity"),
+            ]
+        )
+        self.ids.layout.add_widget(self.data_tables)
+        # Set initial selected row index (assuming first row is default)
+
+    def set_units(self, unit):
+        self.ids.drop_down_menu.text = unit
+        if unit == "Metric":
+            self.ids.bmi_weight.hint_text = "Weight (kg)"
+            self.ids.bmi_height.hint_text = "Height (cm)"
+        else:
+            self.ids.bmi_weight.hint_text = "Weight (lbs)"
+            self.ids.bmi_height.hint_text = "Height (inches)"
+        self.menu.dismiss()
+
+    def calculate(self):
+        weight = self.ids.bmi_weight.text
+        height = self.ids.bmi_height.text
+
+        if weight and height:
+            weight = float(weight)
+            height = float(height)
+
+            if self.ids.drop_down_menu.text == "Metric":
+                bmi = weight / ((height / 100) ** 2)
+            else:
+                bmi = (weight / (height ** 2)) * 703
+            text=""
+            if(bmi<=18.4): 
+                text="Underweight"
+            if bmi >=18.5 and bmi <= 24.9 : 
+                text="Normal Weight"
+            if(bmi>=25 and bmi<= 29.9): 
+                text="Overweight"
+            if bmi >=30:   
+                text="Obesity"
+            self.ids.bmi_label.text = f"BMI: {bmi:.1f}"+f"\n{text}"
+
+        else:
+            self.ids.bmi_label.text = "Please enter both weight and height."
 
 class PredictorWindow(Screen):
     selected_symptoms = []
@@ -69,7 +142,11 @@ class PredictorWindow(Screen):
 
 
     def show_add_symptom_dropdown(self):
+        if not hasattr(self, 'dropdown_open') or not self.dropdown_open:
+            self.dropdown_open = True
         if hasattr(self, 'dropdown_menu') and isinstance(self.dropdown_menu, MDDropdownMenu):
+            self.dropdown_menu.dismiss()
+        if self.ids.diseaseTextField.on_focus == False:
             self.dropdown_menu.dismiss()
         searchText = self.ids.diseaseTextField.text
         symptoms_list = MDApp.get_running_app().symptoms_list
@@ -655,6 +732,25 @@ class MonthWindow(Screen):
             draw(self.what,button_name)
         if(button_name=="December"):
             draw(self.what,button_name)
+
+class AboutWindow(Screen):
+    def on_start(self):
+        pass
+
+    def openGithub(self,index):
+        if index == 1:
+            url = f"https://github.com/sandipkatel"
+            webbrowser.open(url)
+        if index ==2 :
+            url = f"https://github.com/saphalr"
+            webbrowser.open(url)
+        if index == 3:
+            url = f"https://github.com/sharadpokharel108"
+            webbrowser.open(url)
+        if index == 4:
+            url = f"https://github.com/SijanJ"
+            webbrowser.open(url)
+
 
 
 # Load the kv file

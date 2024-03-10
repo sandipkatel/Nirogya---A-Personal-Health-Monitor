@@ -7,4 +7,4 @@ This project is created for personal health monitoring with the aim to monitor t
 - [Sandip Katel](https://github.com/sandipkatel)
 - [Saphal Rimal](https://github.com/saphalr)
 - [Sharad Pokharel](https://github.com/sharadpokharel108)
-- [Sijan Joshi](https://github.com/YellowFlash27)
+- [Sijan Joshi](https://github.com/SijanJ)
