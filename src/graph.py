@@ -27,8 +27,6 @@ def plot_lagrange_interpolation(x_values, y_values,constant1,constant2,disp, x_l
     cubic_spline = CubicSpline(x_values, y_values)
     y_interpolate = cubic_spline(x_interpolate)
 
-    # y_interpolate = [lagrange_interpolation(x_values, y_values, x) for x in x_interpolate]
-
     plt.plot(x_interpolate, y_interpolate, color=line_color)
     if(constant1!=0):
         plt.plot(x_value1,y_values_constant1, color='green', linestyle='--')

@@ -1,6 +1,6 @@
-import graph as g
-import value as v
-import pressure as p
+import src.graph as g
+import src.value as v
+import src.pressure as p
 from datetime import datetime
 from datetime import datetime
 
@@ -14,7 +14,7 @@ def draw(new_st,month_name):
         day="0"+day
     else:
         day=str(day_integer)
-    new= "dependencies\\"
+    new= "dependencies//txt_files//"
     print(day)
     if(new_st=="Platelets"):
         month_days, month_data = v.separate_by_month(v.separeatedata(new+new_st+".txt"))

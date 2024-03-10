@@ -94,8 +94,6 @@ class PriorityQueue:
 class AppointmentScheduler:
     def __init__(self):
         self.appointments = PriorityQueue()
-        # self.filename = filename
-        # self.load_from_file()
 
     def schedule_appointment(self, appointment_time, patient_name):
         self.appointments.push(

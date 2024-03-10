@@ -1,7 +1,6 @@
 from kivymd.app import MDApp
 from kivymd.uix.pickers import MDDatePicker, MDTimePicker
 from kivy.lang import Builder
-import json
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.checkbox import CheckBox
@@ -18,25 +17,24 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivymd.uix.list import TwoLineListItem
-#from kivy.uix.textinput import TextInput
 from kivy.metrics import dp
 from kivymd.uix.list import TwoLineListItem, OneLineListItem
+from kivy.uix.anchorlayout import AnchorLayout
 from kivymd.uix.menu import MDDropdownMenu
-from scheduler import AppointmentScheduler
-from datetime import datetime, date
-from predictor import Prediction, Detail
-from functools import partial
-import ast,webbrowser,csv, requests
-import pandas as pd
-from datetime import datetime
+from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.card import (
     MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
 )
+from datetime import datetime, date
+import ast,webbrowser,csv, requests
+from functools import partial
+import pandas as pd
 import subprocess
-from kivymd.uix.datatables import MDDataTable
-import file as fi
-from kivy.uix.anchorlayout import AnchorLayout
-from display import draw
+import json
+from src.scheduler import AppointmentScheduler
+from src.predictor import Prediction, Detail
+import src.file as fi
+from src.display import draw
 
 today = datetime.today()
 
@@ -189,7 +187,7 @@ class SchedulerWindow(Screen):
         
             
     def save_appointments_to_file(self):
-        filename = f"{self.doctor}_appointments.json"
+        filename = f"dataset/appointments/{self.doctor}.json"
         appointments = self.scheduler.appointments
         data = []
         temp_node = appointments.front
@@ -200,7 +198,7 @@ class SchedulerWindow(Screen):
             json.dump(data, file, indent=4)
     
     def delete_appointment_from_file(self, time, name):
-        filename = f"{self.doctor}_appointments.json"
+        filename = f"dataset/appointments/{self.doctor}.json"
         try:
             with open(filename, "r") as file:
                 data = json.load(file)
@@ -217,7 +215,7 @@ class SchedulerWindow(Screen):
             pass
     
     def load_appointments_from_file(self):
-        filename = f"{self.doctor}_appointments.json"
+        filename = f"dataset/appointments/{self.doctor}.json"
         try:
             with open(filename, "r") as file:
                 data = json.load(file)
@@ -326,7 +324,7 @@ class HospitalWindow(Screen):
     dropdown_menus = {}
     def on_enter(self):
         self.ids.hospitalList.clear_widgets()
-        nameList = self.readData("dataset\hospitals.csv")
+        nameList = self.readData("dataset/hospitals_data/hospitals.csv")
         for name, address in zip(nameList[0], nameList[1]):
             
             item = TwoLineListItem(
@@ -341,7 +339,7 @@ class HospitalWindow(Screen):
             
     
     def view_in_map(self, name, *args):
-        nameList = self.readData("dataset\hospitals.csv")
+        nameList = self.readData("dataset/hospitals_data/hospitals.csv")
         for names in nameList[0]:
             if name == names:
                 nameIndex = nameList[0].index(names)
@@ -370,11 +368,11 @@ class HospitalWindow(Screen):
 
     def sort_by_name(self):
         self.ids.hospitalList.clear_widgets()
-        nameList = self.read_csv("dataset\hospitals.csv")
+        nameList = self.read_csv("dataset/hospitals_data/hospitals.csv")
         self.merge_sort(nameList, key='Name')
-        self.write_csv("dataset\hospitalstd.csv",nameList)
+        self.write_csv("dataset/hospitals_data/hospitalstd.csv",nameList)
         
-        nameList = self.readData("dataset\hospitalstd.csv")
+        nameList = self.readData("dataset/hospitals_data/hospitalstd.csv")
         for name, address in zip(nameList[0], nameList[1]):
             
             item = TwoLineListItem(
@@ -394,22 +392,22 @@ class HospitalWindow(Screen):
         geo_data = geo_request.json()
         g=[float(geo_data['latitude']), float(geo_data['longitude'])]
         #g=[27.664077, 85.341975] 
-        df = pd.read_csv("dataset\hospitals.csv", encoding="ISO-8859-1")
-        nameList = self.readData("dataset\hospitals.csv")
+        df = pd.read_csv("dataset/hospitals_data/hospitals.csv", encoding="ISO-8859-1")
+        nameList = self.readData("dataset/hospitals_data/hospitals.csv")
         distanceList = []
         for coordinates in nameList[3]:
             coordinates = ast.literal_eval(coordinates)
             distance = ((g[0]- coordinates[0])**2 + (g[1]- coordinates[1])**2)**(1/2)
             distanceList.append(distance)
         df['distance'] = distanceList
-        df.to_csv("dataset\hospitalstd.csv", index=False)
+        df.to_csv("dataset/hospitals_data/hospitalstd.csv", index=False)
 
         self.ids.hospitalList.clear_widgets()
-        nameList = self.read_csv("dataset\hospitalstd.csv")
+        nameList = self.read_csv("dataset/hospitals_data/hospitalstd.csv")
         self.merge_sort(nameList, key='distance')
-        self.write_csv("dataset\hospitalstd.csv",nameList)
+        self.write_csv("dataset/hospitals_data/hospitalstd.csv",nameList)
         
-        nameList = self.readData("dataset\hospitalstd.csv")
+        nameList = self.readData("dataset/hospitals_data/hospitalstd.csv")
         for name, address in zip(nameList[0], nameList[1]):
             
             item = TwoLineListItem(
@@ -426,7 +424,7 @@ class HospitalWindow(Screen):
     def searchHospital(self, searchIndex):
         searchText = self.ids.search_hospital.text
         self.ids.hospitalList.clear_widgets()
-        nameList = self.readData("dataset\hospitals.csv")
+        nameList = self.readData("dataset/hospitals_data/hospitals.csv")
         for name, address in zip(nameList[0], nameList[1]):
             searchWhat = name if searchIndex == 0 else address
             if searchText.lower() in searchWhat.lower():
@@ -551,20 +549,20 @@ class DataWindow(Screen):
     def click(self):
         if(self.ids.pressure.text!= ''):
             string=formatted_date+":"+self.ids.pressure.text+" mmHg"+"\n"
-            fi.update_last_line("dependencies\Pressure.txt", string)
+            fi.update_last_line("dependencies/txt_files/Pressure.txt", string)
 
 
         if(self.ids.weight.text!= ''):
             string=formatted_date+":"+self.ids.weight.text+"\n"
-            fi.update_last_line("dependencies\Weight.txt", string)
+            fi.update_last_line("dependencies/txt_files/Weight.txt", string)
 
         if(self.ids.screen.text!= ''):
             string=formatted_date+":"+self.ids.screen.text+"\n"
-            fi.update_last_line("dependencies\Screen.txt", string)
+            fi.update_last_line("dependencies/txt_files/Screen.txt", string)
 
         if(self.ids.water.text!= ''):
             string=formatted_date+":"+self.ids.water.text+"\n"
-            fi.update_last_line("dependencies\Water.txt", string)
+            fi.update_last_line("dependencies/txt_files/Water.txt", string)
 
 
 
@@ -579,20 +577,20 @@ class BloodWindow(Screen):
     def clickk(self):
         if(self.ids.RBC.text!= ''):
             string=formatted_date+":"+self.ids.RBC.text+"\n"
-            fi.update_last_line("dependencies\RBC.txt", string)
+            fi.update_last_line("dependencies/txt_files/RBC.txt", string)
 
 
         if(self.ids.WBC.text!= ''):
             string=formatted_date+":"+self.ids.WBC.text+"\n"
-            fi.update_last_line("dependencies\WBC.txt", string)
+            fi.update_last_line("dependencies/txt_files/WBC.txt", string)
 
         if(self.ids.Platelets.text!= ''):
             string=formatted_date+":"+self.ids.Platelets.text+"\n"
-            fi.update_last_line("dependencies\Platelets.txt", string)
+            fi.update_last_line("dependencies/txt_files/Platelets.txt", string)
 
         if(self.ids.Haemoglobin.text!= ''):
             string=formatted_date+":"+self.ids.Haemoglobin.text+"\n"
-            fi.update_last_line("dependencies\Haemoglobin.txt", string)
+            fi.update_last_line("dependencies/txt_files/Haemoglobin.txt", string)
         return
 
 class GraphWindow(Screen):

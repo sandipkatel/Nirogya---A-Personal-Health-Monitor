@@ -12,11 +12,6 @@ def process_pressure_data(pressure_string):
     else:
         raise ValueError("Invalid pressure string format")
 def pressure_bar(days, pressure_data):
-    # Example pressure data for each day
-    # days = [1,  3]  # Updated to represent days as numbers
-    # pressure_data = ["120/80 mmHg",  "115/75 mmHg"]
-
-    # Process the pressure data for each day
     processed_data = [process_pressure_data(pressure) for pressure in pressure_data]
 
     # Extract systolic and diastolic values

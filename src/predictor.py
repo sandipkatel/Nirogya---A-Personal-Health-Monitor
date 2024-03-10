@@ -1,11 +1,12 @@
 # predictor.py
-from manager import DataManager 
-from DSA_Stuff.merge_sort import sort_dic
+from src.manager import DataManager 
+from src.DSA_Stuff.merge_sort import sort_dic
+from src.DSA_Stuff.binary_search import search
 
 class Prediction:
     def __init__(self):
         self.dm = DataManager()
-        self.df = self.dm.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv")
+        self.df = self.dm.load_and_process_data("dataset/AdditionalSet/training.csv")
     def get_columns(self):
         """return the columns label"""
         return self.df.columns()
@@ -21,7 +22,7 @@ class Prediction:
             probability_given_symptoms = sum_sym / total_sym
             prior_probability = 1 / len(diseases)
             posterior_probability = probability_given_symptoms * prior_probability
-            if dis_label not in probabal_dis :
+            if not search(list(probabal_dis.keys()), dis_label):
                     probabal_dis[dis_label] = posterior_probability
             else:
                     probabal_dis[dis_label] += posterior_probability

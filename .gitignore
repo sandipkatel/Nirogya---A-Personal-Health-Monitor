@@ -13,7 +13,7 @@ Untitled.ipynb
 main1.py
 output*.csv
 tempCodeRunnerFile.py
-style*.*
+hospitalstd.csv
 hospital.py
 # Ignore ownself
 # .gitignore

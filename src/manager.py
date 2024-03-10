@@ -1,6 +1,6 @@
-# manager2.py
+# manager.py
 import csv
-from DSA_Stuff.AVLTree import AVLTree
+from src.DSA_Stuff.AVLTree import AVLTree
 
 class DataManager:
     def __init__(self):
@@ -14,9 +14,8 @@ class DataManager:
         self.clear_data()
         with open(source_filename, 'r') as file:
             csv_reader = csv.reader(file)
-            header = next(csv_reader)  # Read the header row
+            header = next(csv_reader)
             self.columns = header
-            # Read data rows
             for row in csv_reader:
                 row[0] = row[0].title() if row[0] != row[0].upper() else row[0]
                 for i, _data in enumerate(row):
@@ -27,24 +26,19 @@ class DataManager:
         if dest_filename:
             with open(dest_filename, 'w') as file:
                 csv_writer = csv.writer(file)
-                # Write header
                 csv_writer.writerow(self.columns)
-                # Write data
                 for data_row in self.data.get_data():
                     converted_data = [str(item) if not isinstance(item, str) else item for item in data_row]
                     csv_writer.writerow(converted_data)
 
-        # Simulating DataFrame behavior by providing similar interface
         class DataFrameLike:
             def __init__(self, data_manager):
                 self.data_manager = data_manager
 
             def columns(self):
-                # Return column names
                 return self.data_manager.columns[1:]
                     
             def find_diseases(self, symptoms):
-                # Find diseases where all specified symptoms are present
                 result = []
                 dataset = self.data_manager.data.get_data()
                 for data in dataset:
@@ -85,38 +79,6 @@ class DataManager:
                     return None
 
             def __repr__(self):
-                # Implement representation
                 return repr(self.data_manager.data)
 
         return DataFrameLike(self)
-
-
-def main():
-    data_manager = DataManager()
-    df = data_manager.load_and_process_data("dataset/AdditionalSet/training.csv", "output2.csv")
-    symptoms = ["Continuous Sneezing"]
-
-    diseases = df.find_diseases(symptoms)
-    print("Diseases:", diseases)
-    total_sym = len(symptoms)
-    probabal_dis = {}
-    for dis_label, sum_sym in diseases:
-        if dis_label not in probabal_dis:
-            probabal_dis[dis_label] = (total_sym / sum_sym)**2
-        else:
-            probabal_dis[dis_label] += (total_sym / sum_sym)**2
-    
-    total_probablity = sum(probabal_dis.values())
-    for dis, probablity in probabal_dis.items():
-        probabal_dis[dis] = probablity * 100/total_probablity
-
-    sorted_probabal_dis = sorted(probabal_dis.items(), key=lambda x: x[1], reverse = True)
-    print(sorted_probabal_dis)
-
-    
-    df1 = data_manager.load_and_process_data("dataset/Additionalset/testing.csv", "output7.csv")
-    syms = df1.find_internal_data("AIDS")
-    print(syms)
-
-if __name__ == "__main__":
-    main()
