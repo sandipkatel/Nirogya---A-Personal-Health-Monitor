@@ -117,7 +117,7 @@
                 MDRectangleFlatButton:
                     text: "BMI\nCalculator"
                     text_color: 140/255,190/255,214/255,1
-                    font_size: sp(12)  
+                    font_size: sp(11)  
                     halign: 'center'
                     valign: 'bottom'
                     size_hint: None, None
@@ -128,7 +128,7 @@
                     AnchorLayout:
                         anchor_x: "center"
                         MDIcon:
-                            icon: "chart-line"
+                            icon: "calculator"
                             theme_text_color: "Custom"
                             text_color: 140/255,190/255,214/255, 1
                             font_size: 48
@@ -345,7 +345,7 @@
         MDTopAppBar:
             id: topappbar
             orientation: "vertical"
-            title: "Disease Predictor"
+            title: "Disease Diagonase"
             pos_hint: {"top" : 1}
             elevation: 1
             size_hint: 1, None
@@ -966,16 +966,8 @@
                     MDFlatButton:
                         text : "[color=#0000ff]Sharad Pokharel[/color]"
                         pos_hint : {"center_x": 0.5, 'center_y': 0.5}
-                        on_release: root.openGithub(1)
+                        on_release: root.openGithub(3)
                     MDFlatButton:
                         text : "[color=#0000ff]Sijan Joshi[/color]"
                         pos_hint : {"center_x": 0.5, 'center_y': 0.5}
-                        on_release: root.openGithub(1)
-
-                
-
-                
-
-
-
-
+                        on_release: root.openGithub(4)

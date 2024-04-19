@@ -3,7 +3,7 @@ from kivymd.uix.pickers import MDDatePicker, MDTimePicker
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.checkbox import CheckBox
+#from kivy.uix.checkbox import CheckBox
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.selectioncontrol import MDCheckbox
 from kivymd.uix.label import MDLabel
